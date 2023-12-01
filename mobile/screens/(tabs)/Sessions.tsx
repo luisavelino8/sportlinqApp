@@ -61,12 +61,12 @@ const Sessions = () => {
         getSessionRequests();
         getSessions();
         // hier luisteren naar change pending sessions
-        if (listenPendingSessions) {
+        if (listenPendingSessions || currentUserName) {
             getSessionRequests();
             getSessions();
             setListenPendingSessions(false);
         }
-    }, [listenPendingSessions]);
+    }, [listenPendingSessions, currentUserName]);
 
 
     const getSessionRequests = () => {
