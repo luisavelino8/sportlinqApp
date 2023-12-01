@@ -6,6 +6,7 @@ import { getAllLocations } from '../controllers/locationsController.js';
 import { searchFriend, sendFriendRequest, getFriendRequests, getFriends, deleteRequest, acceptRequest } from '../controllers/vriendenController.js';
 import { getFriendsForSessions, sendSessionRequest } from '../controllers/newSessionController.js';
 import { getSessionRequests, deleteSessionRequest, acceptSessionRequest, getSessions } from '../controllers/sessionsController.js';
+import { finishSessionWithoutReview } from '../controllers/reviewsController.js';
 
 const router = express.Router();
 
@@ -41,6 +42,9 @@ router.get('/getSessionRequests', getSessionRequests);
 router.delete('/deleteSessionRequest', deleteSessionRequest);
 router.post('/acceptSessionRequest', acceptSessionRequest);
 router.get('/sessions', getSessions);
+
+// voor reviews
+router.patch('/finishSessionWithoutReview', finishSessionWithoutReview);
 
 
 

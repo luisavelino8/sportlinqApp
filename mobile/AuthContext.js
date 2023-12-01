@@ -11,12 +11,14 @@ export const AuthProvider = ({ children }) => {
   const [listenPendingSessions, setListenPendingSessions] = useState(false);
   const [myFriends, setMyFriends] = useState([]);
   const [friendsCount, setFriendsCount] = useState(null);
+  const [selectedSessionForReview, setSelectedSessionForReview] = useState(null);
 
 
   return (
     <AuthContext.Provider value={{ useToken, setToken, userObject, setUserObject, 
     locations, setLocations, sessionRequests, setSessionRequests, mySessions, setMySessions, 
-    listenPendingSessions, setListenPendingSessions, myFriends, setMyFriends, friendsCount, setFriendsCount}}>
+    listenPendingSessions, setListenPendingSessions, myFriends, setMyFriends, friendsCount, setFriendsCount,
+    selectedSessionForReview, setSelectedSessionForReview}}>
       {children}
     </AuthContext.Provider>
   );

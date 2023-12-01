@@ -3,7 +3,11 @@ import React, { useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import { NavigationProp } from '@react-navigation/native';
 
+interface Routerprops {
+    navigation: NavigationProp<any, any>;
+}
 
 interface RequestSessionType {
     id: number;
@@ -46,10 +50,11 @@ interface SessionType {
 const API_URL = 'http://localhost:5000';
 //const API_URL = 'http://192.168.0.101:5000';
 
-const Sessions = () => {
+const Sessions = ({ navigation }: Routerprops) => {
     const { useToken, setToken, userObject, setUserObject, locations, setLocations } = useAuth();
     const { sessionRequests, setSessionRequests} = useAuth();
     const { mySessions, setMySessions} = useAuth();
+    const { selectedSessionForReview, setSelectedSessionForReview} = useAuth();
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
 
@@ -67,6 +72,11 @@ const Sessions = () => {
             setListenPendingSessions(false);
         }
     }, [listenPendingSessions, currentUserName]);
+
+    const sessionToReview = (object: SessionType) => {
+        setSelectedSessionForReview(object);
+        navigation?.navigate('Review');
+    };
 
 
     const getSessionRequests = () => {
@@ -259,6 +269,15 @@ const Sessions = () => {
                         </View>
                     </TouchableOpacity>
 
+                    {/* requester mag zijn eigen verzoek niet accepteren */}
+                    {currentUserID !== session.requesterUserId && (
+                    <TouchableOpacity style={styles.acceptButton} onPress={() => acceptSessionRequest(session.id)}>
+                        <View>
+                            <FontAwesome name="check" size={25} color="black" />
+                        </View>
+                    </TouchableOpacity>
+                    )}
+
                     </View>
                 );
                 })
@@ -280,8 +299,18 @@ const Sessions = () => {
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
+                const currentDate = new Date();
+                const threeHoursLater = new Date(originalDate.getTime() + 3 * 60 * 60 * 1000);
+
                 return (
                     <View style={[styles.card, {backgroundColor:'#7D8DF6'}]} key={session.session_id}>
+
+                        {currentDate >= threeHoursLater && (
+                        // Voeg nieuwe knop toe als het 3 uur of meer is verstreken
+                        <TouchableOpacity style={styles.reviewButton} onPress={() => {sessionToReview(session)}}>
+                        <Text style={{color: 'white'}}>Review</Text>
+                        </TouchableOpacity>
+                        )}
 
                     <View style={styles.textContainer}>
                         <Text style={[styles.text2, { fontSize: 20 }]}>{session.locationRelation.locationName}</Text>
@@ -432,5 +461,14 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFE8B0',
         padding:6,
         borderRadius:8,
+    },
+    reviewButton: {
+        top: 5,
+        right: 5,
+        position:'absolute',
+        backgroundColor:'green',
+        padding:6,
+        borderRadius:8,
+        zIndex:99, //review button wordt voorop de card getoond
     },
 });
