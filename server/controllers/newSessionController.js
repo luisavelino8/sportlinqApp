@@ -1,25 +1,62 @@
-// deze import moet later veranderen in Friend table, voor nu alle users gebruiken
 import User from '../models/user.js';
+import Friend from '../models/friend.js';
 import { Sequelize } from 'sequelize';
 import PendingSessionRequest from '../models/pendingSessionRequest.js';
 
-// later dus zoeken in Friend en niet in User
-const getFriendsForSessions = async (req, res, next) => {
-    try {
-        const currentUserId = req.query.user_id;
 
-        const friends = await User.findAll({
-            attributes: ['user_id', 'userName'],
+const getFriendsForSessions = async (req, res, next) => {
+    // try {
+    //     const currentUserId = req.query.user_id;
+
+    //     const friends = await User.findAll({
+    //         attributes: ['user_id', 'userName'],
+    //         where: {
+    //             user_id: {
+    //                 [Sequelize.Op.not]: currentUserId,
+    //             },
+    //         },
+    //     });
+    //     res.status(200).json(friends);
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ message: 'Er is een fout opgetreden bij het ophalen van locaties' });
+    // }
+
+    const { user_id } = req.query;
+
+    try {
+        const myFriends = await Friend.findAll({
             where: {
-                user_id: {
-                    [Sequelize.Op.not]: currentUserId,
-                },
+                [Sequelize.Op.or]: [
+                    { user1_id: user_id },
+                    { user2_id: user_id }
+                ]
             },
+            include: [
+                {
+                    model: User,
+                    as: 'user1',
+                    attributes: ['userName'],
+                    where: {
+                        user_id: Sequelize.col('friends.user1_id')
+                    }
+                },
+                {
+                    model: User,
+                    as: 'user2',
+                    attributes: ['userName'],
+                    where: {
+                        user_id: Sequelize.col('friends.user2_id')
+                    }
+                },
+            ]
         });
-        res.status(200).json(friends);
+
+        console.log('my friends: '+myFriends);
+        res.status(200).json(myFriends);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Er is een fout opgetreden bij het ophalen van locaties' });
+        res.status(500).json({ message: 'Er is een fout opgetreden bij het ophalen van je vrienden voor een sessie' });
     }
 };
 

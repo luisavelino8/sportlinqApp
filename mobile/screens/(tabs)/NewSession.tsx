@@ -10,8 +10,16 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 
 
 interface Friend {
-    user_id: number;
-    userName: string;
+    // user_id: number;
+    // userName: string;
+    user1_id: number;
+    user2_id: number;
+    user1:{
+      userName: string;
+    },
+    user2:{
+      userName: string;
+    },
 }
 
 interface LocationType {
@@ -292,7 +300,10 @@ const NewSession = () => {
                 <View style={styles.modal}>
                 
                 <RNPickerSelect
-                items={listOfFriends.map(friend => ({ label: friend.userName, value: friend.user_id }))}
+                items={listOfFriends.map(friend => ({ 
+                  label: friend.user1_id === currentUser ? friend.user2.userName : friend.user1.userName,
+                  value: friend.user1_id === currentUser ? friend.user2_id : friend.user1_id,
+                }))}
                 placeholder={{ label: 'Vriend', value: '' }}
                 onValueChange={handleFriendChange}
                 style={{
