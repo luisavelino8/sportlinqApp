@@ -92,4 +92,42 @@ const finishSessionWithReview = async (req, res, next) => {
     }
 };
 
-export { finishSessionWithoutReview, finishSessionWithReview };
+const getReviews = async (req, res, next) => {
+    const { user_id } = req.query;
+
+    try {
+        const myReviews = await Review.findAll({
+            where: {
+                user_id: user_id,
+            },
+            include: [
+                {
+                    model: Location,
+                    as: 'locationReview',
+                    attributes: ['locationName'],
+                    where: {
+                        location_id: Sequelize.col('reviews.location_id')
+                    }
+                },
+                {
+                    model: Session,
+                    as: 'sessionReview',
+                    attributes: ['date'],
+                    where: {
+                        session_id: Sequelize.col('reviews.session_id')
+                    }
+                },
+            ]
+        });
+
+        //const reviewsCount = myReviews.length;
+
+        console.log('my reviews: '+myReviews);
+        res.status(200).json(myReviews);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Er is een fout opgetreden bij het ophalen van de reviews' });
+    }
+};
+
+export { finishSessionWithoutReview, finishSessionWithReview, getReviews };

@@ -12,6 +12,7 @@ import ProfileSettings from './screens/ProfileSettings';
 import AccountDetail from './screens/AccountDetail';
 import Vrienden from './screens/Vrienden';
 import Review from './screens/Review';
+import ReviewPage from './screens/ReviewPage';
 import { AuthProvider, useAuth } from '../mobile/AuthContext';
 import { useEffect } from 'react';
 import FlashMessage from "react-native-flash-message";
@@ -56,6 +57,15 @@ function InsideLayout() {
           backgroundColor:'white',
         },
         headerTintColor: 'black',
+      }} />
+      <InsideStack.Screen name='ReviewPage' component={ReviewPage}
+      options={{
+        headerShown:true,
+        headerStyle:{
+          backgroundColor:'white',
+        },
+        headerTintColor: 'black',
+        headerTitle:'Reviews'
       }} />
       <InsideStack.Screen name='Review' component={Review}
       options={{

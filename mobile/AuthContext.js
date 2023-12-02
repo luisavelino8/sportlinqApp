@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [mySessions, setMySessions] = useState([]);
   const [listenPendingSessions, setListenPendingSessions] = useState(false);
   const [myFriends, setMyFriends] = useState([]);
+  const [myReviews, setMyReviews] = useState([]);
   const [friendsCount, setFriendsCount] = useState(null);
   const [selectedSessionForReview, setSelectedSessionForReview] = useState(null);
   const [sessionReviewed, setSessionReviewed] = useState(false);
@@ -18,8 +19,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ useToken, setToken, userObject, setUserObject, 
     locations, setLocations, sessionRequests, setSessionRequests, mySessions, setMySessions, 
-    listenPendingSessions, setListenPendingSessions, myFriends, setMyFriends, friendsCount, setFriendsCount,
-    selectedSessionForReview, setSelectedSessionForReview, sessionReviewed, setSessionReviewed}}>
+    listenPendingSessions, setListenPendingSessions, myFriends, setMyFriends, myReviews, setMyReviews, 
+    friendsCount, setFriendsCount, selectedSessionForReview, setSelectedSessionForReview, sessionReviewed, setSessionReviewed}}>
       {children}
     </AuthContext.Provider>
   );
