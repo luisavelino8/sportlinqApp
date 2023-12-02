@@ -34,7 +34,8 @@ interface SessionType {
     location_id: number;
     date: string;
     finished: string;
-    reviewed: string;
+    reviewUser1: string;
+    reviewUser2: string;
     locationRelation: {
         locationName: string;
         street: string;
@@ -57,6 +58,8 @@ const Sessions = ({ navigation }: Routerprops) => {
     const { selectedSessionForReview, setSelectedSessionForReview} = useAuth();
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
+    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+
 
     // luister of er nieuwe pending sessions zijn, dan sessies opnieuw laden
     const { listenPendingSessions, setListenPendingSessions } = useAuth();
@@ -66,12 +69,13 @@ const Sessions = ({ navigation }: Routerprops) => {
         getSessionRequests();
         getSessions();
         // hier luisteren naar change pending sessions
-        if (listenPendingSessions || currentUserName) {
+        if (listenPendingSessions || currentUserName || sessionReviewed) {
             getSessionRequests();
             getSessions();
             setListenPendingSessions(false);
+            setSessionReviewed(false);
         }
-    }, [listenPendingSessions, currentUserName]);
+    }, [listenPendingSessions, currentUserName, sessionReviewed]);
 
     const sessionToReview = (object: SessionType) => {
         setSelectedSessionForReview(object);
@@ -170,7 +174,8 @@ const Sessions = ({ navigation }: Routerprops) => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    setMySessions(jsonRes)
+                    setMySessions(jsonRes);
+                    console.log(jsonRes);
                 } else {
                     console.error(jsonRes.message);
                 }
@@ -225,7 +230,8 @@ const Sessions = ({ navigation }: Routerprops) => {
             <View style={styles.cardContainer}>
             {sessionRequests && sessionRequests.length > 0 ? (
                 // Als sessions niet leeg is
-                (sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
+                (sessionRequests as RequestSessionType[]).map(session => {
+                //(sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
@@ -295,7 +301,21 @@ const Sessions = ({ navigation }: Routerprops) => {
             <View style={styles.cardContainer}>
             {mySessions && mySessions.length > 0 ? (
                 // Als sessions niet leeg is
-                (mySessions.slice().reverse() as SessionType[]).map(session => {
+                (mySessions as SessionType[]).map(session => {
+                //(mySessions.slice().reverse() as SessionType[]).map(session => {
+
+                const userInDB = currentUserID === session.user1_id ? 'user1' : 'user2';
+
+                // Controleer of de huidige gebruiker de sessie al heeft beoordeeld
+                const sessionReviewed =
+                    (userInDB === 'user1' && session.reviewUser1 !== 'notconfirmed') ||
+                    (userInDB === 'user2' && session.reviewUser2 !== 'notconfirmed');
+        
+                if (sessionReviewed) {
+                    // Sla het renderen van deze sessiekaart over als deze al is beoordeeld
+                    return null;
+                }
+        
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
