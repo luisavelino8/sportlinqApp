@@ -33,10 +33,17 @@ const Profile = ({ navigation }: Routerprops) => {
     const {myFriends, setMyFriends} = useAuth();
     const {friendsCount, setFriendsCount} = useAuth();
     const {myReviews, setMyReviews} = useAuth();
+    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+
 
     useEffect(() => {
       getFriends();
       getReviews();
+      if (sessionReviewed) {
+        getFriends();
+        getReviews();
+        setSessionReviewed(false);
+      }
     }, []);
 
     // dus origineel aanwezig in vrienden.tsx component

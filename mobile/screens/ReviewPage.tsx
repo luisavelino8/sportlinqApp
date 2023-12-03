@@ -23,16 +23,37 @@ const ReviewPage = ({ navigation }: Routerprops) => {
         for (let i = 1; i <= 5; i++) {
             const starColor = i <= rating ? '#FFC436' : 'white';
             stars.push(
-                <FontAwesome key={i} name="star" size={18} color={starColor} />
+                <FontAwesome key={i} name="star" size={22} color={starColor} />
             );
         }
         return stars;
     };
 
+    const getTimeAgo = (sessionDate: string) => {
+        const today = new Date();
+        const session = new Date(sessionDate);
+    
+        const timeDifference = today.getTime() - session.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    
+        if (daysDifference < 1) {
+            return 'Vandaag';
+        } else if (daysDifference < 2) {
+            return 'Gisteren';
+        } else if (daysDifference < 30) {
+            return `${daysDifference} dagen geleden`;
+        } else {
+            const monthsDifference = Math.floor(daysDifference / 30);
+            return `${monthsDifference} ${monthsDifference === 1 ? 'maand' : 'maanden'} geleden`;
+        }
+    };
+
 
     return (
         <View style={styles.container}>
-            <View style={styles.optionBar}></View>
+            <View style={styles.optionBar}>
+                <Text style={{color:'#7D8DF6'}} >Reviews van afgeronde sessies</Text>
+            </View>
 
             <View style={styles.reviewContainer}>
             <FlatList
@@ -43,12 +64,18 @@ const ReviewPage = ({ navigation }: Routerprops) => {
                         <View style={styles.textContainer}>
                             {/* <Image source={require('../assets/images/logo.png')} style={styles.image} resizeMode='contain'/> */}
                             <View style={styles.reviewInfo}>
-                                <Text style={{ fontSize: 16 }}>{item.locationReview.locationName}</Text>
+                                <View style={{width:'100%', flexDirection:'row'}}>
+                                    <View style={{width:'60%'}}>
+                                        <Text style={{ fontSize: 16 }}>{item.locationReview.locationName}</Text>
+                                    </View>
+                                    <View style={{width:'40%', alignItems:'flex-end'}}>
+                                        <Text style={{ fontSize: 16, color:'dimgrey' }}>{getTimeAgo(item.sessionReview.date)}</Text>
+                                    </View>
+                                </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     {renderStars(item.rating)}
                                 </View>
-                                <Text style={{ fontSize: 16 }}>{item.reviewText}</Text>
-                                <Text style={{ fontSize: 16 }}>{item.sessionReview.date}</Text>
+                                <Text style={{ fontSize: 13, width:'100%', paddingTop:6 }}>{item.reviewText}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -79,16 +106,17 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     textContainer: {
-        height:100,
+        height:140,
         flexDirection:'row',
         alignItems:'center',
         borderBottomWidth:1,
         borderBottomColor:'lightgrey',
+        padding:12,
     },
     reviewInfo: {
-        height:'100%',
-        width:'70%',
-        justifyContent:'center',
+        height:110,
+        width:'100%',
+        justifyContent:'flex-start',
     },
     image: {
         width:60,

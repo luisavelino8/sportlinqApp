@@ -104,7 +104,7 @@ const Review = () => {
     const finishSessionWithReview = () => {
         let hasErrors = false;
 
-        if (!reviewText) {
+        if (!reviewText || reviewText.length > 200) {
             setReviewTextError(true);
             hasErrors = true;
         }else{
@@ -204,7 +204,7 @@ const Review = () => {
                     <View>
                         <Text>Hoe was jouw ervaring op deze locatie?</Text>
                         <TextInput placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText}/>
-                        <Text style={{color: reviewTextError ? 'red' : '#FFC436'}}>review veld mag niet leeg zijn</Text>
+                        <Text style={{color: reviewTextError ? 'red' : '#FFC436'}}>veld mag niet leeg zijn of groter dan 200 karakters</Text>
                     </View>
 
                     <View style={{flexDirection:'row'}}>

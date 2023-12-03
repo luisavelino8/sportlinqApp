@@ -1,5 +1,5 @@
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
-import React, { useEffect } from 'react';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Switch, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { showMessage, hideMessage } from 'react-native-flash-message';
@@ -59,6 +59,11 @@ const Sessions = ({ navigation }: Routerprops) => {
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
     const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+
+    const [isChecked, setIsChecked] = useState(false);
+    const toggleIsChecked = () => {
+        setIsChecked(value => !value);
+    };
 
 
     // luister of er nieuwe pending sessions zijn, dan sessies opnieuw laden
@@ -222,8 +227,99 @@ const Sessions = ({ navigation }: Routerprops) => {
         });
     };
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+
+        // Extract components
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        // Format components
+        const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month} ${hours}:${minutes}`;
+
+        return formattedDate;
+    };
+
+
     return (
         <View style={styles.container}>
+            <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+            trackColor={{true:'lightgrey', false:'lightgrey'}}/>
+
+            {isChecked ? (
+                // alternatieve lijst vorm
+                <ScrollView style={styles.alterListScrollView} >
+
+                    <Text style={{fontSize:11, paddingLeft:8, marginBottom:4}}>Sessie verzoeken</Text>
+                    <FlatList
+                    data={sessionRequests}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#FFC436'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.requesterUser.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}}>{item.requesterUser.userName}</Text>
+                                    )}
+
+                                    {item.receiverUser.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}}>{item.receiverUser.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+                    <Text style={{fontSize:11, paddingLeft:8, marginBottom:4}}>Geplande sessies</Text>
+                    <FlatList
+                    data={mySessions}
+                    keyExtractor={(item) => item.session_id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#7D8DF6'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.user1.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user1.userName}</Text>
+                                    )}
+
+                                    {item.user2.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user2.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+                </ScrollView>
+            ) : (
             <ScrollView style={styles.scrollView}>
                 <Text style={{fontSize:16, marginLeft:30, marginBottom:6}}>Sessie verzoeken</Text>
 
@@ -269,13 +365,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                             <FontAwesome name="close" size={25} color='black'/>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.acceptButton} onPress={() => {acceptSessionRequest(session.id)}}>
-                        <View>
-                            <FontAwesome name="check" size={25} color='black'/>
-                        </View>
-                    </TouchableOpacity>
-
-                    {/* requester mag zijn eigen verzoek niet accepteren */}
+                    
                     {currentUserID !== session.requesterUserId && (
                     <TouchableOpacity style={styles.acceptButton} onPress={() => acceptSessionRequest(session.id)}>
                         <View>
@@ -370,6 +460,7 @@ const Sessions = ({ navigation }: Routerprops) => {
             </View>
 
             </ScrollView>
+            )}
         </View>
     );
 };
@@ -385,6 +476,11 @@ const styles = StyleSheet.create({
         position:'relative',
     },
     scrollView: {
+        width: '100%',
+        height: '100%',
+        paddingTop:8,
+    },
+    alterListScrollView: {
         width: '100%',
         height: '100%',
         paddingTop:8,
