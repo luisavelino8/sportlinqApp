@@ -7,6 +7,7 @@ import { searchFriend, sendFriendRequest, getFriendRequests, getFriends, deleteR
 import { getFriendsForSessions, sendSessionRequest } from '../controllers/newSessionController.js';
 import { getSessionRequests, deleteSessionRequest, acceptSessionRequest, getSessions } from '../controllers/sessionsController.js';
 import { finishSessionWithoutReview, finishSessionWithReview, getReviews } from '../controllers/reviewsController.js';
+import { getSessionsFromFriends } from '../controllers/homeController.js';
 
 const router = express.Router();
 
@@ -15,6 +16,9 @@ router.post('/login', login);
 router.post('/signup', signup);
 router.get('/private', isAuth);
 router.post('/getUserInfo', getUserInfo);
+
+// voor home tab
+router.get('/getSessionsFromFriends', getSessionsFromFriends);
 
 // voor locaties
 router.get('/locations', getAllLocations);

@@ -34,16 +34,29 @@ const ReviewPage = ({ navigation }: Routerprops) => {
         const session = new Date(sessionDate);
     
         const timeDifference = today.getTime() - session.getTime();
-        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        // const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
     
-        if (daysDifference < 1) {
+        // if (daysDifference < 1) {
+        //     return 'Vandaag';
+        // } else if (daysDifference < 2) {
+        //     return 'Gisteren';
+        // } else if (daysDifference < 30) {
+        //     return `${daysDifference} dagen geleden`;
+        // } else {
+        //     const monthsDifference = Math.floor(daysDifference / 30);
+        //     return `${monthsDifference} ${monthsDifference === 1 ? 'maand' : 'maanden'} geleden`;
+        // }
+
+        const hoursDifference = Math.ceil(timeDifference / (1000 * 60 * 60));
+        if (hoursDifference < 24) {
             return 'Vandaag';
-        } else if (daysDifference < 2) {
+        } else if (hoursDifference < 48) {
             return 'Gisteren';
-        } else if (daysDifference < 30) {
-            return `${daysDifference} dagen geleden`;
+        } else if (hoursDifference < 24 * 30) {
+            const daysDifference = Math.floor(hoursDifference / 24);
+            return `${daysDifference} ${daysDifference === 1 ? 'dag' : 'dagen'} geleden`;
         } else {
-            const monthsDifference = Math.floor(daysDifference / 30);
+            const monthsDifference = Math.floor(hoursDifference / (24 * 30));
             return `${monthsDifference} ${monthsDifference === 1 ? 'maand' : 'maanden'} geleden`;
         }
     };
