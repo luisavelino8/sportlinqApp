@@ -20,6 +20,11 @@ const getSessionsFromFriends = async (req, res, next) => {
             },
         });
 
+        if (friends.length === 0) {
+            // Geen vrienden gevonden
+            return res.status(404).json({ message: 'geen vrienden gevonden' });
+        }
+
         // Verzamel de gebruikers-ID's van deze vrienden
         const friendUserIds = friends.map(friend => {
             return friend.user1_id === numericUserId ? friend.user2_id : friend.user1_id;
@@ -57,6 +62,11 @@ const getSessionsFromFriends = async (req, res, next) => {
                 }
             ]
         });
+
+        if (sessionsFromFriends.length === 0) {
+            // Geen vrienden gevonden
+            return res.status(404).json({ message: 'je vrienden hebben geen recente sessies gehad.' });
+        }
         
         const sessionsWithUserType = sessionsFromFriends.map(session => {
             // Vergelijk de gebruikers-ID's van vrienden met user1_id en user2_id in elke sessie

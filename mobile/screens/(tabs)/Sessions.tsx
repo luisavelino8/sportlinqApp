@@ -59,6 +59,8 @@ const Sessions = ({ navigation }: Routerprops) => {
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
     const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+    const [allObjectsNull, setAllObjectsNull] = useState(true);
+
 
     const [isChecked, setIsChecked] = useState(false);
     const toggleIsChecked = () => {
@@ -252,7 +254,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                 // alternatieve lijst vorm
                 <ScrollView style={styles.alterListScrollView} >
 
-                    <Text style={{fontSize:11, paddingLeft:8, marginBottom:4}}>Sessie verzoeken</Text>
+                    <Text style={{fontSize:11, paddingLeft:8, paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey' }}>Sessie verzoeken</Text>
                     <FlatList
                     data={sessionRequests}
                     keyExtractor={(item) => item.id.toString()}
@@ -285,9 +287,43 @@ const Sessions = ({ navigation }: Routerprops) => {
                     )}
                     />
 
-                    <Text style={{fontSize:11, paddingLeft:8, marginBottom:4}}>Geplande sessies</Text>
+                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Geplande sessies</Text>
                     <FlatList
-                    data={mySessions}
+                    data={mySessions.filter((item: SessionType)  => item.finished !== 'YES')}
+                    keyExtractor={(item) => item.session_id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#7D8DF6'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.user1.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user1.userName}</Text>
+                                    )}
+
+                                    {item.user2.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user2.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+
+                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Afgeronde sessies</Text>
+                    <FlatList
+                    data={mySessions.filter((item: SessionType)  => item.finished === 'YES')}
                     keyExtractor={(item) => item.session_id.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => {}}>
@@ -326,7 +362,7 @@ const Sessions = ({ navigation }: Routerprops) => {
             <View style={styles.cardContainer}>
             {sessionRequests && sessionRequests.length > 0 ? (
                 // Als sessions niet leeg is
-                (sessionRequests as RequestSessionType[]).map(session => {
+                (sessionRequests as RequestSessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
                 //(sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
@@ -391,7 +427,7 @@ const Sessions = ({ navigation }: Routerprops) => {
             <View style={styles.cardContainer}>
             {mySessions && mySessions.length > 0 ? (
                 // Als sessions niet leeg is
-                (mySessions as SessionType[]).map(session => {
+                (mySessions as SessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
                 //(mySessions.slice().reverse() as SessionType[]).map(session => {
 
                 const userInDB = currentUserID === session.user1_id ? 'user1' : 'user2';
@@ -405,6 +441,8 @@ const Sessions = ({ navigation }: Routerprops) => {
                     // Sla het renderen van deze sessiekaart over als deze al is beoordeeld
                     return null;
                 }
+
+                setAllObjectsNull(false);
         
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
@@ -453,10 +491,19 @@ const Sessions = ({ navigation }: Routerprops) => {
                 })
             ) : (
                 // Als sessions leeg is
-                <View style={styles.emptyCard}>
-                <Text style={{color:'black', fontSize:18}}>Geen geplande sessies</Text>
+                <View style={[styles.emptyCard, { backgroundColor: '#7D8DF6' }]}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
                 </View>
+                
             )}
+
+            {mySessions && mySessions.length > 0 && allObjectsNull && (
+            // Alle objecten waren null, dus ook hier lege session card weergeven
+            <View style={[styles.emptyCard, {backgroundColor:'#7D8DF6'}]}>
+                <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
+            </View>
+            )}
+
             </View>
 
             </ScrollView>
