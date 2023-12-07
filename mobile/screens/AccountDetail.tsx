@@ -10,13 +10,9 @@ interface Routerprops {
     navigation: NavigationProp<any, any>;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
-//const API_URL = 'http://145.44.217.63:5000'; //van school
-//const API_URL = 'http://192.168.178.24:5000';
-
-
 const AccountDetail = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken } = useAuth();
     const { userObject, setUserObject} = useAuth();
     

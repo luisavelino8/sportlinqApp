@@ -48,10 +48,10 @@ interface SessionType {
     };
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
 
 const Sessions = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken, userObject, setUserObject, locations, setLocations } = useAuth();
     const { sessionRequests, setSessionRequests} = useAuth();
     const { mySessions, setMySessions} = useAuth();
@@ -60,6 +60,10 @@ const Sessions = ({ navigation }: Routerprops) => {
     const currentUserName = userObject.userName;
     const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
     const [allObjectsNull, setAllObjectsNull] = useState(true);
+
+    // bij ophalen van sessies checken of array null objects heeft, omdat ze al reviewed zijn
+    let areAllObjectsNull = true;
+
 
 
     const [isChecked, setIsChecked] = useState(false);
@@ -77,6 +81,7 @@ const Sessions = ({ navigation }: Routerprops) => {
         getSessions();
         // hier luisteren naar change pending sessions
         if (listenPendingSessions || currentUserName || sessionReviewed) {
+            areAllObjectsNull = true;
             getSessionRequests();
             getSessions();
             setListenPendingSessions(false);
@@ -127,11 +132,13 @@ const Sessions = ({ navigation }: Routerprops) => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    showToast(jsonRes.message);
+                    //showToast(jsonRes.message);
+                    console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    showFailToast(jsonRes.message);
+                    //showFailToast(jsonRes.message);
+                    console.log(jsonRes.message);
                 }
             } catch (err) {
                 console.error(err);
@@ -154,11 +161,13 @@ const Sessions = ({ navigation }: Routerprops) => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    showToast(jsonRes.message);
+                    //showToast(jsonRes.message);
+                    console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    showFailToast(jsonRes.message);
+                    //showFailToast(jsonRes.message);
+                    console.log(jsonRes.message);
                 }
             } catch (err) {
                 console.error(err);
@@ -442,7 +451,8 @@ const Sessions = ({ navigation }: Routerprops) => {
                     return null;
                 }
 
-                setAllObjectsNull(false);
+                areAllObjectsNull = false;
+                //setAllObjectsNull(false);
         
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
@@ -497,7 +507,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                 
             )}
 
-            {mySessions && mySessions.length > 0 && allObjectsNull && (
+            {mySessions && mySessions.length > 0 && areAllObjectsNull && (
             // Alle objecten waren null, dus ook hier lege session card weergeven
             <View style={[styles.emptyCard, {backgroundColor:'#7D8DF6'}]}>
                 <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
@@ -511,6 +521,7 @@ const Sessions = ({ navigation }: Routerprops) => {
         </View>
     );
 };
+
 
 export default Sessions
 

@@ -33,10 +33,11 @@ interface LocationType {
     image: string;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
+
 
 const NewSession = () => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const [visible, setVisible] = useState(isFocused);
@@ -297,6 +298,8 @@ const NewSession = () => {
                 </TouchableOpacity>
               </View>
 
+              {listOfFriends.length > 0 ? (
+              <>
                 <View style={styles.modal}>
                 
                 <RNPickerSelect
@@ -358,8 +361,14 @@ const NewSession = () => {
                 width:300, height:50, backgroundColor:'white', marginTop:16, borderRadius:16, alignItems:'center',
                 justifyContent:'center'}}>
                   <Text style={{fontSize:16, color:'#7D8DF6', fontWeight:'bold' }}>Verstuur uitnodiging</Text>
-                </TouchableOpacity>
-                
+                </TouchableOpacity> 
+              </>
+              ) : (
+                <View style={styles.modal}>
+                  <Text style={{color: 'white' }}>Geen vrienden om van te kiezen</Text>
+                </View>
+              )}
+
             </View>
         </Modal>
         </View>

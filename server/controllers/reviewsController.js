@@ -85,7 +85,7 @@ const finishSessionWithReview = async (req, res, next) => {
             rating: rating,
         })
 
-        res.status(200).json({ message: 'Sessie afgerond met review' });
+        res.status(200).json({ message: 'Sessie afgerond met een review' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Er is een fout opgetreden bij het afronden van de sessie' });

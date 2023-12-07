@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
+
 
 interface SessionFriend {
     session_id: number;
@@ -49,6 +48,8 @@ interface SessionType {
 }
 
 const Home = () => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken } = useAuth();
     const { userObject, setUserObject} = useAuth();
     const currentUser = userObject ? userObject.user_id : null;
@@ -268,8 +269,8 @@ const Home = () => {
                 })
             ) : (
                 // Als sessions leeg is
-                <View>
-                <Text>Geen sessies van vrienden</Text>
+                <View style={{width:'85%', marginBottom:14}} >
+                    <Text style={{color:'dimgrey'}}>Geen sessies beschikbaar</Text>
                 </View>
             )}
             </View>

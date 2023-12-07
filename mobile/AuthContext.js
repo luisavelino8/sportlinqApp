@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [API_URL, setAPI_URL] = useState('');
+
   const [useToken, setToken] = useState(null);
   const [userObject, setUserObject] = useState(null);
   const [locations, setLocations] = useState([]);
@@ -17,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ useToken, setToken, userObject, setUserObject, 
+    <AuthContext.Provider value={{ API_URL, setAPI_URL, useToken, setToken, userObject, setUserObject, 
     locations, setLocations, sessionRequests, setSessionRequests, mySessions, setMySessions, 
     listenPendingSessions, setListenPendingSessions, myFriends, setMyFriends, myReviews, setMyReviews, 
     friendsCount, setFriendsCount, selectedSessionForReview, setSelectedSessionForReview, sessionReviewed, setSessionReviewed}}>

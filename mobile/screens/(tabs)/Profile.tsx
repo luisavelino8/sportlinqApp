@@ -19,10 +19,10 @@ interface Friend {
   };
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
 
 const Profile = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken } = useAuth();
     const { userObject, setUserObject} = useAuth();
     const currentUser = userObject.user_id;
