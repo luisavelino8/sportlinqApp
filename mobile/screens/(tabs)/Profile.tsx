@@ -19,10 +19,10 @@ interface Friend {
   };
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
 
 const Profile = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken } = useAuth();
     const { userObject, setUserObject} = useAuth();
     const currentUser = userObject.user_id;
@@ -32,11 +32,18 @@ const Profile = ({ navigation }: Routerprops) => {
 
     const {myFriends, setMyFriends} = useAuth();
     const {friendsCount, setFriendsCount} = useAuth();
-    //const [myFriends, setMyFriends] = useState<Friend[]>([]);
-    //const [friendsCount, setFriendsCount] = useState(null);
+    const {myReviews, setMyReviews} = useAuth();
+    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+
 
     useEffect(() => {
       getFriends();
+      getReviews();
+      if (sessionReviewed) {
+        getFriends();
+        getReviews();
+        setSessionReviewed(false);
+      }
     }, []);
 
     // dus origineel aanwezig in vrienden.tsx component
@@ -66,6 +73,32 @@ const Profile = ({ navigation }: Routerprops) => {
       });
     };
 
+    // voor reviews en ReviewPage
+    const getReviews = () => {
+      fetch(`${API_URL}/getReviews?user_id=${currentUser}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${useToken}`,
+          },
+      })
+      .then(async res => {
+          try {
+              const jsonRes = await res.json();
+              if (res.status === 200) {
+                  setMyReviews(jsonRes);
+              } else {
+                  console.error(jsonRes.message);
+              }
+          } catch (err) {
+              console.error(err);
+          }
+      })
+      .catch(err => {
+          console.error(err);
+      });
+    };
+
     return (
         <View style={styles.container}>
           <View style={styles.headerContainer}>
@@ -77,8 +110,8 @@ const Profile = ({ navigation }: Routerprops) => {
             <View style={styles.extraInfoContainer}>
               <TouchableOpacity onPress={() => {navigation?.navigate('Vrienden');}}>
                   <View style={styles.extraInfo}>
-                  <Text style={{color:'white', fontSize:24}}>{friendsCount}</Text>
-                  <Text style={{color:'white'}}>{friendsCount === 1 ? ' vriend' : ' vrienden'}</Text>
+                  <Text style={{color:'white', fontSize:24}}>{myFriends.length}</Text>
+                  <Text style={{color:'white'}}>{myFriends.length === 1 ? ' vriend' : ' vrienden'}</Text>
                   </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {}} >
@@ -87,10 +120,10 @@ const Profile = ({ navigation }: Routerprops) => {
                   <Text style={{color:'white'}}>sessies</Text>
                   </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => {navigation?.navigate('ReviewPage');}}>
                   <View style={styles.extraInfo}>
-                  <Text style={{color:'white', fontSize:24}}>0</Text>
-                  <Text style={{color:'white'}}>reviews</Text>
+                  <Text style={{color:'white', fontSize:24}}>{myReviews.length}</Text>
+                  <Text style={{color:'white'}}>{myReviews.length === 1 ? ' review' : ' reviews'}</Text>
                   </View>
               </TouchableOpacity>
             </View>

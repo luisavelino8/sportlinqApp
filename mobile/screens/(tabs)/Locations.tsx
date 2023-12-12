@@ -1,7 +1,9 @@
-import {View, Text, StyleSheet, ScrollView, Image, Button, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, Button, TouchableOpacity, Switch} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../mobile/AuthContext';
 import { imageRoutes } from '../../assets/images/imagesRoutes';
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
 interface ImageRoutes {
     [key: string]: any;
@@ -19,17 +21,57 @@ interface LocationType {
     image: string;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
-//const API_URL = 'http://145.44.217.63:5000'; //van school
-//const API_URL = 'http://192.168.178.24:5000';
+const INITIAL_REGION = {
+    latitude: 52.3676,
+    longitude: 5.2041,
+    latitudeDelta: 3,
+    longitudeDelta: 3,
+};
 
-
+// voor nu voorbeeld locaties, straks echte locaties gebruiken
+const markers = [
+    {
+        latitude: 52.372353,
+        longitude: 4.884312,
+        latitudeDelta: 3,
+        longitudeDelta: 3,
+        name:'KC Move',
+        address:'Rozengracht 93A',
+        zipcode:'1016 LT Amsterdam',
+    },
+    {
+        latitude: 52.368049,
+        longitude: 5.215572,
+        latitudeDelta: 3,
+        longitudeDelta: 3,
+        name:'Basicfit',
+        address:' Editiestraat 22',
+        zipcode:'1321 NG Almere',
+    },
+]
 
 const LocationComponent = () => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken } = useAuth();
 
     const { locations, setLocations} = useAuth();
+    const navigation = useNavigation();
+
+    const [isChecked, setIsChecked] = useState(false);
+    const toggleIsChecked = () => {
+        setIsChecked(value => !value);
+    };
+
+    useEffect(() => {
+        navigation.setOptions({
+                    headerRight: () => (
+                        <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                        trackColor={{true:'lightgrey', false:'lightgrey'}} style={{marginRight:14}}/>
+                    ),
+                });
+    }, [isChecked]);
+
 
     // getlocations uitvoeren wanneer component geladen
     // useEffect(() => {
@@ -64,8 +106,9 @@ const LocationComponent = () => {
 
     return (
         <View style={styles.container}>
-            {/*<Text style={{marginTop:50, width:'100%'}}></Text>*/}
-            <ScrollView style={styles.scrollView}>
+
+            {isChecked ? (
+                <ScrollView style={styles.scrollView}>
                 <View style={styles.cardContainer}>
                     {(locations as LocationType[]).map(location => (
                         <View style={styles.card} key={location.location_id}>
@@ -79,14 +122,36 @@ const LocationComponent = () => {
                                 <Text style={[styles.text,{fontSize:14, color:'#C0C9FF'}]}>{location.sport}</Text>
                                 <Text style={styles.text}>{location.street}</Text>
                                 <Text style={styles.text}>{location.city}</Text>
-                                {/* <TouchableOpacity style={styles.button} onPress={() => {}}>
-                                    <Text style={{color:'white'}}>Info</Text>
-                                </TouchableOpacity> */}
                             </View>
                         </View>
                     ))}
                 </View>
-            </ScrollView>
+                </ScrollView>
+            ) : (
+                // <MapView style={StyleSheet.absoluteFill} 
+                // provider={PROVIDER_GOOGLE} 
+                // initialRegion={INITIAL_REGION}
+                // showsUserLocation
+                // showsMyLocationButton
+                // >
+                //     {markers.map((marker, index) => (
+                //         <Marker key={index} coordinate={marker}>
+                //             <Callout>
+                //                 <View style={{padding:12, justifyContent:'center',alignItems:'center'}}>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.name}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.address}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.zipcode}</Text>
+                //                 </View>
+                //             </Callout>
+                //         </Marker>
+                //     ))}
+                // </MapView>
+
+                <View>
+                    <Text>Maps</Text>
+                </View>
+            )}
+
         </View>
     );
 };
@@ -98,7 +163,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems:'center',
-        marginTop:16,
+    },
+    map: {
+        width:'100%',
+        height:'100%',
     },
     scrollView: {
         width: '100%',
@@ -107,6 +175,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop:16,
     },
     card: {
         width:'85%',

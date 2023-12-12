@@ -10,8 +10,16 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 
 
 interface Friend {
-    user_id: number;
-    userName: string;
+    // user_id: number;
+    // userName: string;
+    user1_id: number;
+    user2_id: number;
+    user1:{
+      userName: string;
+    },
+    user2:{
+      userName: string;
+    },
 }
 
 interface LocationType {
@@ -25,10 +33,11 @@ interface LocationType {
     image: string;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
+
 
 const NewSession = () => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const [visible, setVisible] = useState(isFocused);
@@ -289,10 +298,15 @@ const NewSession = () => {
                 </TouchableOpacity>
               </View>
 
+              {listOfFriends.length > 0 ? (
+              <>
                 <View style={styles.modal}>
                 
                 <RNPickerSelect
-                items={listOfFriends.map(friend => ({ label: friend.userName, value: friend.user_id }))}
+                items={listOfFriends.map(friend => ({ 
+                  label: friend.user1_id === currentUser ? friend.user2.userName : friend.user1.userName,
+                  value: friend.user1_id === currentUser ? friend.user2_id : friend.user1_id,
+                }))}
                 placeholder={{ label: 'Vriend', value: '' }}
                 onValueChange={handleFriendChange}
                 style={{
@@ -347,8 +361,14 @@ const NewSession = () => {
                 width:300, height:50, backgroundColor:'white', marginTop:16, borderRadius:16, alignItems:'center',
                 justifyContent:'center'}}>
                   <Text style={{fontSize:16, color:'#7D8DF6', fontWeight:'bold' }}>Verstuur uitnodiging</Text>
-                </TouchableOpacity>
-                
+                </TouchableOpacity> 
+              </>
+              ) : (
+                <View style={styles.modal}>
+                  <Text style={{color: 'white' }}>Geen vrienden om van te kiezen</Text>
+                </View>
+              )}
+
             </View>
         </Modal>
         </View>

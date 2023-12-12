@@ -1,4 +1,3 @@
-// voor nu alleen pending ophalen, later ook de geplande ophalen
 import PendingSessionRequest from '../models/pendingSessionRequest.js';
 import Location from '../models/location.js';
 import User from '../models/user.js';
@@ -89,8 +88,9 @@ const acceptSessionRequest = async (req, res, next) => {
             user2_id: request.receiverUserId,
             location_id: request.location_id,
             date: request.date,
-            finished: "NO",
-            reviewed: "NO",
+            finished: "notconfirmed",
+            reviewUser1: "notconfirmed",
+            reviewUser2: "notconfirmed",
         })
 
         await request.destroy();

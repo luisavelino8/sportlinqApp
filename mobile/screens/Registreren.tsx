@@ -3,20 +3,14 @@ import React, { useState } from 'react';
 //import { FIREBASE_AUTH } from '../../FirebaseConfig';
 //import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
+import { useAuth } from '../AuthContext';
 
 interface Routerprops {
     navigation: NavigationProp<any, any>;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
-//const API_URL = 'http://145.44.217.63:5000'; //van school
-//const API_URL = Platform.OS === 'ios' ? 'http://localhost:5000' : 'http://10.0.2.2:5000';
-//const API_URL = 'http://192.168.178.24:5000';
-
-
-
 const RegistrerenNew = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
 
     const [email, setEmail] = useState('');
     const [userName, setName] = useState('');

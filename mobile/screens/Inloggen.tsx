@@ -11,16 +11,10 @@ interface Routerprops {
     navigation: NavigationProp<any, any>;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
-//const API_URL = 'http://145.44.217.63:5000'; //van school
-//const API_URL = Platform.OS === 'ios' ? 'http://localhost:5000' : 'http://10.0.2.2:5000';
-//const API_URL = 'http://192.168.178.24:5000';
-
-
-
 
 const InloggenNew = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const [email, setEmail] = useState('');
     const [userName, setName] = useState('');
     const [password, setPassword] = useState('');

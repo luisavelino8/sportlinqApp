@@ -1,9 +1,13 @@
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
-import React, { useEffect } from 'react';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Switch, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import { NavigationProp } from '@react-navigation/native';
 
+interface Routerprops {
+    navigation: NavigationProp<any, any>;
+}
 
 interface RequestSessionType {
     id: number;
@@ -30,7 +34,8 @@ interface SessionType {
     location_id: number;
     date: string;
     finished: string;
-    reviewed: string;
+    reviewUser1: string;
+    reviewUser2: string;
     locationRelation: {
         locationName: string;
         street: string;
@@ -43,15 +48,29 @@ interface SessionType {
     };
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
 
-const Sessions = () => {
+const Sessions = ({ navigation }: Routerprops) => {
+    const { API_URL, setAPI_URL} = useAuth();
+
     const { useToken, setToken, userObject, setUserObject, locations, setLocations } = useAuth();
     const { sessionRequests, setSessionRequests} = useAuth();
     const { mySessions, setMySessions} = useAuth();
+    const { selectedSessionForReview, setSelectedSessionForReview} = useAuth();
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
+    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+    const [allObjectsNull, setAllObjectsNull] = useState(true);
+
+    // bij ophalen van sessies checken of array null objects heeft, omdat ze al reviewed zijn
+    let areAllObjectsNull = true;
+
+
+
+    const [isChecked, setIsChecked] = useState(false);
+    const toggleIsChecked = () => {
+        setIsChecked(value => !value);
+    };
+
 
     // luister of er nieuwe pending sessions zijn, dan sessies opnieuw laden
     const { listenPendingSessions, setListenPendingSessions } = useAuth();
@@ -61,12 +80,19 @@ const Sessions = () => {
         getSessionRequests();
         getSessions();
         // hier luisteren naar change pending sessions
-        if (listenPendingSessions) {
+        if (listenPendingSessions || currentUserName || sessionReviewed) {
+            areAllObjectsNull = true;
             getSessionRequests();
             getSessions();
             setListenPendingSessions(false);
+            setSessionReviewed(false);
         }
-    }, [listenPendingSessions]);
+    }, [listenPendingSessions, currentUserName, sessionReviewed]);
+
+    const sessionToReview = (object: SessionType) => {
+        setSelectedSessionForReview(object);
+        navigation?.navigate('Review');
+    };
 
 
     const getSessionRequests = () => {
@@ -106,11 +132,13 @@ const Sessions = () => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    showToast(jsonRes.message);
+                    //showToast(jsonRes.message);
+                    console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    showFailToast(jsonRes.message);
+                    //showFailToast(jsonRes.message);
+                    console.log(jsonRes.message);
                 }
             } catch (err) {
                 console.error(err);
@@ -133,11 +161,13 @@ const Sessions = () => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    showToast(jsonRes.message);
+                    //showToast(jsonRes.message);
+                    console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    showFailToast(jsonRes.message);
+                    //showFailToast(jsonRes.message);
+                    console.log(jsonRes.message);
                 }
             } catch (err) {
                 console.error(err);
@@ -160,7 +190,8 @@ const Sessions = () => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    setMySessions(jsonRes)
+                    setMySessions(jsonRes);
+                    console.log(jsonRes);
                 } else {
                     console.error(jsonRes.message);
                 }
@@ -207,15 +238,141 @@ const Sessions = () => {
         });
     };
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+
+        // Extract components
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        // Format components
+        const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month} ${hours}:${minutes}`;
+
+        return formattedDate;
+    };
+
+
     return (
         <View style={styles.container}>
+            <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+            trackColor={{true:'lightgrey', false:'lightgrey'}}/>
+
+            {isChecked ? (
+                // alternatieve lijst vorm
+                <ScrollView style={styles.alterListScrollView} >
+
+                    <Text style={{fontSize:11, paddingLeft:8, paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey' }}>Sessie verzoeken</Text>
+                    <FlatList
+                    data={sessionRequests}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#FFC436'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.requesterUser.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}}>{item.requesterUser.userName}</Text>
+                                    )}
+
+                                    {item.receiverUser.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}}>{item.receiverUser.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Geplande sessies</Text>
+                    <FlatList
+                    data={mySessions.filter((item: SessionType)  => item.finished !== 'YES')}
+                    keyExtractor={(item) => item.session_id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#7D8DF6'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.user1.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user1.userName}</Text>
+                                    )}
+
+                                    {item.user2.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user2.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+
+                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Afgeronde sessies</Text>
+                    <FlatList
+                    data={mySessions.filter((item: SessionType)  => item.finished === 'YES')}
+                    keyExtractor={(item) => item.session_id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                                <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#7D8DF6'}}></View>
+                                </View>
+
+                                <View style={{width:'25%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}} >
+                                    {item.user1.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user1.userName}</Text>
+                                    )}
+
+                                    {item.user2.userName !== currentUserName && (
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.user2.userName}</Text>
+                                    )}
+                                </View>
+
+                                <View style={{width:'44%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{item.locationRelation.locationName}</Text>
+                                </View>
+
+                                <View style={{width:'26%'}}>
+                                    <Text style={{fontSize:11}} numberOfLines={1} ellipsizeMode="tail">{formatDate(item.date)} uur</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    />
+
+                </ScrollView>
+            ) : (
             <ScrollView style={styles.scrollView}>
                 <Text style={{fontSize:16, marginLeft:30, marginBottom:6}}>Sessie verzoeken</Text>
 
             <View style={styles.cardContainer}>
             {sessionRequests && sessionRequests.length > 0 ? (
                 // Als sessions niet leeg is
-                (sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
+                (sessionRequests as RequestSessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
+                //(sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
@@ -253,11 +410,14 @@ const Sessions = () => {
                             <FontAwesome name="close" size={25} color='black'/>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.acceptButton} onPress={() => {acceptSessionRequest(session.id)}}>
+                    
+                    {currentUserID !== session.requesterUserId && (
+                    <TouchableOpacity style={styles.acceptButton} onPress={() => acceptSessionRequest(session.id)}>
                         <View>
-                            <FontAwesome name="check" size={25} color='black'/>
+                            <FontAwesome name="check" size={25} color="black" />
                         </View>
                     </TouchableOpacity>
+                    )}
 
                     </View>
                 );
@@ -276,12 +436,39 @@ const Sessions = () => {
             <View style={styles.cardContainer}>
             {mySessions && mySessions.length > 0 ? (
                 // Als sessions niet leeg is
-                (mySessions.slice().reverse() as SessionType[]).map(session => {
+                (mySessions as SessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
+                //(mySessions.slice().reverse() as SessionType[]).map(session => {
+
+                const userInDB = currentUserID === session.user1_id ? 'user1' : 'user2';
+
+                // Controleer of de huidige gebruiker de sessie al heeft beoordeeld
+                const sessionReviewed =
+                    (userInDB === 'user1' && session.reviewUser1 !== 'notconfirmed') ||
+                    (userInDB === 'user2' && session.reviewUser2 !== 'notconfirmed');
+        
+                if (sessionReviewed) {
+                    // Sla het renderen van deze sessiekaart over als deze al is beoordeeld
+                    return null;
+                }
+
+                areAllObjectsNull = false;
+                //setAllObjectsNull(false);
+        
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
+                const currentDate = new Date();
+                const threeHoursLater = new Date(originalDate.getTime() + 3 * 60 * 60 * 1000);
+
                 return (
                     <View style={[styles.card, {backgroundColor:'#7D8DF6'}]} key={session.session_id}>
+
+                        {currentDate >= threeHoursLater && (
+                        // Voeg nieuwe knop toe als het 3 uur of meer is verstreken
+                        <TouchableOpacity style={styles.reviewButton} onPress={() => {sessionToReview(session)}}>
+                        <Text style={{color: 'white'}}>Review</Text>
+                        </TouchableOpacity>
+                        )}
 
                     <View style={styles.textContainer}>
                         <Text style={[styles.text2, { fontSize: 20 }]}>{session.locationRelation.locationName}</Text>
@@ -314,16 +501,27 @@ const Sessions = () => {
                 })
             ) : (
                 // Als sessions leeg is
-                <View style={styles.emptyCard}>
-                <Text style={{color:'black', fontSize:18}}>Geen geplande sessies</Text>
+                <View style={[styles.emptyCard, { backgroundColor: '#7D8DF6' }]}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
                 </View>
+                
             )}
+
+            {mySessions && mySessions.length > 0 && areAllObjectsNull && (
+            // Alle objecten waren null, dus ook hier lege session card weergeven
+            <View style={[styles.emptyCard, {backgroundColor:'#7D8DF6'}]}>
+                <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
+            </View>
+            )}
+
             </View>
 
             </ScrollView>
+            )}
         </View>
     );
 };
+
 
 export default Sessions
 
@@ -336,6 +534,11 @@ const styles = StyleSheet.create({
         position:'relative',
     },
     scrollView: {
+        width: '100%',
+        height: '100%',
+        paddingTop:8,
+    },
+    alterListScrollView: {
         width: '100%',
         height: '100%',
         paddingTop:8,
@@ -432,5 +635,14 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFE8B0',
         padding:6,
         borderRadius:8,
+    },
+    reviewButton: {
+        top: 5,
+        right: 5,
+        position:'absolute',
+        backgroundColor:'green',
+        padding:6,
+        borderRadius:8,
+        zIndex:99, //review button wordt voorop de card getoond
     },
 });

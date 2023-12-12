@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { NavigationContext, NavigationProp } from '@react-navigation/native';
+import { useAuth } from '../AuthContext';
 
 interface Routerprops {
     navigation: NavigationProp<any, any>;
 }
   
 export default function WelcomeScreen() {
+  const { API_URL, setAPI_URL} = useAuth();
+
+  useEffect(() => {
+    setAPI_URL('http://localhost:5000');
+    //setAPI_URL('http://192.168.0.102:5000');
+  }, []);
+
   return (
     <NavigationContext.Consumer>
       {(navigation) => (

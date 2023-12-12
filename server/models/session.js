@@ -41,7 +41,11 @@ const Session = sequelize.define('sessions', {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    reviewed: {
+    reviewUser1: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    reviewUser2: {
       type: Sequelize.STRING,
       allowNull: false,
     },
