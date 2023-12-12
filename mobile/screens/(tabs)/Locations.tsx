@@ -128,24 +128,28 @@ const LocationComponent = () => {
                 </View>
                 </ScrollView>
             ) : (
-                <MapView style={StyleSheet.absoluteFill} 
-                provider={PROVIDER_GOOGLE} 
-                initialRegion={INITIAL_REGION}
-                showsUserLocation
-                showsMyLocationButton
-                >
-                    {markers.map((marker, index) => (
-                        <Marker key={index} coordinate={marker}>
-                            <Callout>
-                                <View style={{padding:12, justifyContent:'center',alignItems:'center'}}>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.name}</Text>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.address}</Text>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.zipcode}</Text>
-                                </View>
-                            </Callout>
-                        </Marker>
-                    ))}
-                </MapView>
+                // <MapView style={StyleSheet.absoluteFill} 
+                // provider={PROVIDER_GOOGLE} 
+                // initialRegion={INITIAL_REGION}
+                // showsUserLocation
+                // showsMyLocationButton
+                // >
+                //     {markers.map((marker, index) => (
+                //         <Marker key={index} coordinate={marker}>
+                //             <Callout>
+                //                 <View style={{padding:12, justifyContent:'center',alignItems:'center'}}>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.name}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.address}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.zipcode}</Text>
+                //                 </View>
+                //             </Callout>
+                //         </Marker>
+                //     ))}
+                // </MapView>
+
+                <View>
+                    <Text>Maps</Text>
+                </View>
             )}
 
         </View>

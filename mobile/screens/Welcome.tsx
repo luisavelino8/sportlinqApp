@@ -11,8 +11,8 @@ export default function WelcomeScreen() {
   const { API_URL, setAPI_URL} = useAuth();
 
   useEffect(() => {
-    //setAPI_URL('http://localhost:5000');
-    setAPI_URL('http://192.168.0.102:5000');
+    setAPI_URL('http://localhost:5000');
+    //setAPI_URL('http://192.168.0.102:5000');
   }, []);
 
   return (
