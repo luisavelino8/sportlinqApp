@@ -11,6 +11,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: sportlingApp/mobile
+          working-directory: mobile
           start: npm run web
           wait-on: 'http://localhost:19006'
