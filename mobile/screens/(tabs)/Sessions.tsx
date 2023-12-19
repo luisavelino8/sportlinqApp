@@ -256,20 +256,23 @@ const Sessions = ({ navigation }: Routerprops) => {
 
     return (
         <View style={styles.container}>
-            <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
-            trackColor={{true:'lightgrey', false:'lightgrey'}}/>
+            {/* <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+            trackColor={{true:'lightgrey', false:'lightgrey'}}/> */}
 
             {isChecked ? (
                 // alternatieve lijst vorm
-                <ScrollView style={styles.alterListScrollView} >
+                <View style={styles.alterListScrollView} >
 
-                    <Text style={{fontSize:11, paddingLeft:8, paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey' }}>Sessie verzoeken</Text>
+                    <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                    trackColor={{true:'lightgrey', false:'lightgrey'}} style={{alignSelf:'center',marginBottom:10}} />
+
+                    <Text style={{fontSize:12, paddingLeft:8, paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey' }}>Sessie verzoeken</Text>
                     <FlatList
                     data={sessionRequests}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => {}}>
-                            <View style={{flexDirection:'row', width:'100%', padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
+                            <View style={{flexDirection:'row', width:'100%',padding:6, borderBottomWidth:.8,borderBottomColor:'lightgrey'}}>
                                 <View style={{width:'5%', borderRightWidth:.7,borderRightColor:'lightgrey', marginRight:6}}>
                                     <View style={{width:16, height:16,borderRadius:50, backgroundColor:'#FFC436'}}></View>
                                 </View>
@@ -296,7 +299,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                     )}
                     />
 
-                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Geplande sessies</Text>
+                    <Text style={{fontSize:12, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Geplande sessies</Text>
                     <FlatList
                     data={mySessions.filter((item: SessionType)  => item.finished !== 'YES')}
                     keyExtractor={(item) => item.session_id.toString()}
@@ -330,7 +333,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                     />
 
 
-                    <Text style={{fontSize:11, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Afgeronde sessies</Text>
+                    <Text style={{fontSize:12, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Afgeronde sessies</Text>
                     <FlatList
                     data={mySessions.filter((item: SessionType)  => item.finished === 'YES')}
                     keyExtractor={(item) => item.session_id.toString()}
@@ -363,9 +366,12 @@ const Sessions = ({ navigation }: Routerprops) => {
                     )}
                     />
 
-                </ScrollView>
+                </View>
             ) : (
             <ScrollView style={styles.scrollView}>
+                <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                trackColor={{true:'lightgrey', false:'lightgrey'}} style={{alignSelf:'center',marginBottom:10}}/>
+
                 <Text style={{fontSize:16, marginLeft:30, marginBottom:6}}>Sessie verzoeken</Text>
 
             <View style={styles.cardContainer}>
