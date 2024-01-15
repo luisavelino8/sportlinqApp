@@ -40,22 +40,22 @@ const markers = [
         zipcode:'1016 LT Amsterdam',
     },
     {
-        latitude: 52.398296,
-        longitude: 4.903456,
+        latitude: 52.369869,
+        longitude: 5.220388,
         latitudeDelta: 3,
         longitudeDelta: 3,
-        name:'Sportschool The Golden Lion',
-        address:' Van Hogestraat 33',
-        zipcode:'1031 HH Amsterdam',
+        name:'Basic-Fit',
+        address:'Donjon 9',
+        zipcode:'1315 XH Almere',
     },
     {
-        latitude: 52.292339,
-        longitude: 4.990812,
+        latitude: 52.443811,
+        longitude: 4.838977,
         latitudeDelta: 3,
         longitudeDelta: 3,
-        name:'Sportveld de Plas',
-        address:'Henk Bernardstraat 494',
-        zipcode:'1107 CS Amsterdam',
+        name:'Hoornseveldje',
+        address:'De Weer 81',
+        zipcode:'1504 AK Zaandam',
     },
 ]
 
@@ -137,28 +137,27 @@ const LocationComponent = () => {
                 </View>
                 </ScrollView>
             ) : (
-                <MapView style={StyleSheet.absoluteFill} 
-                provider={PROVIDER_GOOGLE} 
-                initialRegion={INITIAL_REGION}
-                showsUserLocation
-                showsMyLocationButton
-                >
-                    {markers.map((marker, index) => (
-                        <Marker key={index} coordinate={marker}>
-                            <Callout>
-                                <View style={{padding:12, justifyContent:'center',alignItems:'center'}}>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.name}</Text>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.address}</Text>
-                                    <Text style={{color:'#7D8DF6'}} >{marker.zipcode}</Text>
-                                </View>
-                            </Callout>
-                        </Marker>
-                    ))}
-                </MapView>
+                // <MapView style={StyleSheet.absoluteFill} 
+                // provider={PROVIDER_GOOGLE} 
+                // initialRegion={INITIAL_REGION}
+                // showsUserLocation
+                // >
+                //     {markers.map((marker, index) => (
+                //         <Marker key={index} coordinate={marker}>
+                //             <Callout>
+                //                 <View style={{padding:12, justifyContent:'center',alignItems:'center'}}>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.name}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.address}</Text>
+                //                     <Text style={{color:'#7D8DF6'}} >{marker.zipcode}</Text>
+                //                 </View>
+                //             </Callout>
+                //         </Marker>
+                //     ))}
+                // </MapView>
 
-                // <View>
-                //     <Text>Maps</Text>
-                // </View>
+                <View>
+                    <Text>Maps</Text>
+                </View>
             )}
 
         </View>

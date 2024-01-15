@@ -405,11 +405,11 @@ const Sessions = ({ navigation }: Routerprops) => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.sideButton} onPress={() => {}}>
+                    {/* <TouchableOpacity style={styles.sideButton} onPress={() => {}}>
                         <View>
                         <Text style={{ color: 'black' }}>Bekijk</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity style={styles.deleteButton} onPress={() => {deleteSessionRequest(session.id)}}>
                         <View>
@@ -496,11 +496,11 @@ const Sessions = ({ navigation }: Routerprops) => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={[styles.sideButton,{backgroundColor:'#6C79CF'}]} onPress={() => {}}>
+                    {/* <TouchableOpacity style={[styles.sideButton,{backgroundColor:'#6C79CF'}]} onPress={() => {}}>
                         <View>
                         <Text style={{ color: 'white' }}>Bekijk</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     </View>
                 );
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
         top: 5,
         right: 5,
         position:'absolute',
-        backgroundColor:'green',
+        backgroundColor:'#6C79CF',
         padding:6,
         borderRadius:8,
         zIndex:99, //review button wordt voorop de card getoond
