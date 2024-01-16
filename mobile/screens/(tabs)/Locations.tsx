@@ -40,13 +40,22 @@ const markers = [
         zipcode:'1016 LT Amsterdam',
     },
     {
-        latitude: 52.368049,
-        longitude: 5.215572,
+        latitude: 52.369869,
+        longitude: 5.220388,
         latitudeDelta: 3,
         longitudeDelta: 3,
-        name:'Basicfit',
-        address:' Editiestraat 22',
-        zipcode:'1321 NG Almere',
+        name:'Basic-Fit',
+        address:'Donjon 9',
+        zipcode:'1315 XH Almere',
+    },
+    {
+        latitude: 52.443811,
+        longitude: 4.838977,
+        latitudeDelta: 3,
+        longitudeDelta: 3,
+        name:'Hoornseveldje',
+        address:'De Weer 81',
+        zipcode:'1504 AK Zaandam',
     },
 ]
 
@@ -132,7 +141,6 @@ const LocationComponent = () => {
                 // provider={PROVIDER_GOOGLE} 
                 // initialRegion={INITIAL_REGION}
                 // showsUserLocation
-                // showsMyLocationButton
                 // >
                 //     {markers.map((marker, index) => (
                 //         <Marker key={index} coordinate={marker}>

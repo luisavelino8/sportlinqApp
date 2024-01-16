@@ -146,7 +146,7 @@ const Home = () => {
     .slice(0, 1);
     
     return (
-        <View style={styles.container}>
+        <View testID="homeScreenContainer" style={styles.container}>
 
             <View style={styles.topContainer} >
                 <View style={{width:'85%'}} >

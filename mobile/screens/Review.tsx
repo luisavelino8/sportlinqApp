@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, ScrollView, Modal} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, ScrollView, Modal, Keyboard} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../mobile/AuthContext';
@@ -45,17 +45,22 @@ const Review = () => {
     };
 
     const hide = () => {
-        setVisible(false);
+        //setVisible(false);
         setVisibleReviewModal(false);
         setSelectedSessionForReview(null); // ook nog voor andere handelingen binnen deze page
+        navigation.goBack();
     };
 
     const handleDismiss = () => {
-        navigation.goBack();
+        //navigation.goBack();
+        if (!visibleReviewModal) {
+            navigation.goBack();
+        }
     };
 
     const openReviewModal = () => {
         setVisibleReviewModal(true);
+        setVisible(false);
     };
 
     useEffect(() => {
@@ -251,13 +256,14 @@ const Review = () => {
                         <Text style={{fontSize:20, color:'white'}} >Sportsessie #{session_id}</Text>
                     </View>
 
-                    <View style={{width:'94%',height:170,alignItems:'center', backgroundColor:'#FFDE8D', borderRadius:8, padding:10}} >
+                    <View style={{width:'94%',height:150,alignItems:'center', backgroundColor:'#FFDE8D', borderRadius:8, padding:10}} >
                         <Text style={{fontSize:12, color:'#C59217',width:'100%',justifyContent:'flex-start'}}>Hoe was jouw ervaring op deze locatie?</Text>
-                        <TextInput style={{width:'100%',height:120,textAlignVertical: 'top', marginVertical:8}} multiline placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText}/>
-                        <Text style={{fontSize:12,textAlign:'center',color: reviewTextError ? 'red' : '#FFDE8D'}}>geen lege veld of meer dan 200 karakters</Text>
+                        {/* <TextInput style={{width:'100%',height:120,textAlignVertical: 'top', marginVertical:8}} multiline placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText}/> */}
+                        <TextInput style={{width:'100%',height:120,textAlignVertical: 'top', marginVertical:8}} multiline placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText} blurOnSubmit={true}/>
+                        <Text style={{fontSize:12,textAlign:'center',color: reviewTextError ? 'red' : '#FFC436'}}>geen lege veld of meer dan 200 karakters</Text>
                     </View>
 
-                    <View style={{flexDirection:'row', marginTop:14}}>
+                    <View style={{flexDirection:'row', marginTop:36}}>
                         {renderStars()}
                     </View>
                     <Text style={{fontSize:12,color: ratingError ? 'red' : '#FFC436', marginVertical:6}}>geef een rating</Text>
@@ -290,7 +296,6 @@ const styles = StyleSheet.create({
         flex:1,
         width:'100%',
         height:'100%',
-        backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center',
     },
@@ -307,7 +312,6 @@ const styles = StyleSheet.create({
         height:30,
         alignItems:'center',
         justifyContent:'center',
-        padding:16,
         borderRadius:8,
         backgroundColor:'#555FA3',
     }
