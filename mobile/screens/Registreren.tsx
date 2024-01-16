@@ -144,22 +144,22 @@ const RegistrerenNew = ({ navigation }: Routerprops) => {
               <View style={styles.inputContainer}>
                 <TextInput style={[styles.input, emailError && styles.errorInput]} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)} value={email} clearButtonMode='always'/>
                 {/* {emailError && <Text style={styles.errorText}>email moet eindigen op "@gmail.com"</Text>} */}
-                <Text style={{color: emailError ? 'red' : 'white'}}>email moet eindigen op "@gmail.com"</Text>
+                <Text testID="emailError" style={{color: emailError ? 'red' : 'white'}}>email moet eindigen op "@gmail.com"</Text>
 
                 <TextInput style={[styles.input, userNameError && styles.errorInput]} placeholder="Username" onChangeText={(text) => setName(text)} value={userName} clearButtonMode='always'/>
                 {/* {userNameError && <Text style={styles.errorText}>naam moet tussen 6 en 30 karakters</Text>} */}
-                <Text style={{color: userNameError ? 'red' : 'white'}}>naam moet tussen 6 en 30 karakters</Text>
+                <Text testID="userNameError" style={{color: userNameError ? 'red' : 'white'}}>naam moet tussen 6 en 30 karakters</Text>
 
 
                 <TextInput secureTextEntry={true} style={[styles.input, passwordError && styles.errorInput]} placeholder="Password" onChangeText={(text) => setPassword(text)} value={password} clearButtonMode='always'/>
                 {/* {passwordError && <Text style={styles.errorText}>minimaal 8 tekens, hoofdletter, cijfer en speciaal teken</Text>} */}
-                <Text style={{color: passwordError ? 'red' : 'white'}}>minimaal 8 tekens, hoofdletter, cijfer en speciaal teken</Text>
+                <Text testID="passwordError" style={{color: passwordError ? 'red' : 'white'}}>minimaal 8 tekens, hoofdletter, cijfer en speciaal teken</Text>
 
 
                 <Text style={[styles.message, { color: isError ? 'red' : 'green' }]}>{message ? getMessage() : null}</Text>
               </View>
               <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
+              <TouchableOpacity testID="signUpButton" style={styles.button} onPress={onSubmitHandler}>
                   <Text style={styles.buttonText}>Sign up</Text>
               </TouchableOpacity>
               <Text style={{padding:2, color:'dimgrey'}}>or</Text>

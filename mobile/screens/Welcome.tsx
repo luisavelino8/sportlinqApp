@@ -20,11 +20,13 @@ export default function WelcomeScreen() {
         // <ImageBackground source={require('../assets/images/bg1.png')} style={styles.imageBG}>
         <View style={styles.container}>
           <Image
+            testID="SportlinqLogo"
             source={require('../assets/images/logo.png')}
             style={styles.image}
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity
+              testID="loginDirectory"
               style={styles.button}
               onPress={() => {
               navigation?.navigate('Inloggen');
@@ -33,6 +35,7 @@ export default function WelcomeScreen() {
             <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              testID="signUpDirectory"
               style={styles.button2}
               onPress={() => {
               navigation?.navigate('Registreren');

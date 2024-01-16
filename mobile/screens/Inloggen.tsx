@@ -170,12 +170,12 @@ const InloggenNew = ({ navigation }: Routerprops) => {
         <View style={styles.container}>
             <View style={styles.inlogContainer}>
                 <View style={styles.inputContainer}>
-                    <TextInput style={[styles.input, message ==='Gebruiker niet gevonden' && styles.errorInput]} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)} value={email} clearButtonMode='always'></TextInput>
-                    <TextInput secureTextEntry={true} style={[styles.input, (message === 'Vul de juiste wachtwoord in'||message === 'Gebruiker niet gevonden') && styles.errorInput]} placeholder="Password" onChangeText={(text) => setPassword(text)} value={password} clearButtonMode='always'></TextInput>
+                    <TextInput testID="emailInput" style={[styles.input, message ==='Gebruiker niet gevonden' && styles.errorInput]} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)} value={email} clearButtonMode='always'></TextInput>
+                    <TextInput testID="passwordInput" secureTextEntry={true} style={[styles.input, (message === 'Vul de juiste wachtwoord in'||message === 'Gebruiker niet gevonden') && styles.errorInput]} placeholder="Password" onChangeText={(text) => setPassword(text)} value={password} clearButtonMode='always'></TextInput>
                     <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
+                    <TouchableOpacity testID="loginButton" style={styles.button} onPress={onSubmitHandler}>
                         <Text style={styles.buttonText}>Log in</Text>
                     </TouchableOpacity>
                     <Text style={{padding:2, color:'dimgrey'}}>or</Text>
