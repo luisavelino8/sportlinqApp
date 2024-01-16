@@ -270,18 +270,18 @@ const AccountDetail = ({ navigation }: Routerprops) => {
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.emailContainer}>
+            <View testID="emailField" style={styles.emailContainer}>
                 <Text style={styles.textInput}>{userObject.email}</Text>
             </View>
             <View style={styles.otherContainer}>
-                <View style={styles.dataContainer}>
+                <View testID="usernameField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Gebruikersnaam</Text>
                 <TextInput style={styles.textInput} placeholder="Gebruikersnaam" autoCapitalize="none" onChangeText={(text) => setNewUserName(text)} value={newUserName} clearButtonMode='always'></TextInput>
                 </View>
                 {/* {userNameError && <Text style={styles.errorText}>naam moet tussen 6 en 30 karakters</Text>} */}
                 <Text style={{color: userNameError ? 'red' : 'white'}}>Gebruikersnaam mag niet leeg zijn</Text>
 
-                <View style={styles.dataContainer}>
+                <View testID="fullnameField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Volledige naam</Text>
                 <TextInput style={styles.textInput} placeholder="Volledige naam" autoCapitalize="none" onChangeText={(text) => setNewFullName(text)} value={newFullName} clearButtonMode='always'></TextInput>
                 {/* {fullNameError && <Text style={styles.errorText}>verkort je naam voor het profiel</Text>} */}
@@ -289,14 +289,14 @@ const AccountDetail = ({ navigation }: Routerprops) => {
                 <Text style={{color: fullNameError ? 'red' : 'white'}}>verkort je naam voor het profiel</Text>
 
 
-                <View style={styles.dataContainer}>
+                <View testID="cityField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Stad</Text>
                 <TextInput style={styles.textInput} placeholder="Stad" autoCapitalize="none" onChangeText={(text) => setNewCity(text)} value={newCity} clearButtonMode='always'></TextInput>
                 {/* {cityError && <Text style={styles.errorText}>verkort de stadsnaam</Text>} */}
                 </View>
                 <Text style={{color: cityError ? 'red' : 'white'}}>verkort de stadsnaam</Text>
 
-                <View style={styles.dataContainer}>
+                <View testID="aboutmeField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Over mij</Text>
                 <TextInput style={styles.textInput} placeholder="Over mij" autoCapitalize="none" onChangeText={(text) => setNewAboutMe(text)} value={newAboutMe} clearButtonMode='always'></TextInput>
                 {/* {aboutMeError && <Text style={styles.errorText}>Maximaal 220 karakters</Text>} */}
@@ -306,7 +306,7 @@ const AccountDetail = ({ navigation }: Routerprops) => {
             </View>
 
             <TouchableOpacity onPress={show}>
-                <View style={styles.passwordContainer}>
+                <View testID="passwordField" style={styles.passwordContainer}>
                 <Text style={styles.textInput}>Wachtwoord</Text>
                 <FontAwesome name="angle-right" size={25} color='black' style={{ marginRight: 15}}/>
                 </View>

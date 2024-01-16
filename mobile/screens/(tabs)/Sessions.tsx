@@ -263,11 +263,12 @@ const Sessions = ({ navigation }: Routerprops) => {
                 // alternatieve lijst vorm
                 <View style={styles.alterListScrollView} >
 
-                    <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                    <Switch testID="sessionListSwitch" value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
                     trackColor={{true:'lightgrey', false:'lightgrey'}} style={{alignSelf:'center',marginBottom:10}} />
 
                     <Text style={{fontSize:12, paddingLeft:8, paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey' }}>Sessie verzoeken</Text>
                     <FlatList
+                    testID="altList"
                     data={sessionRequests}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
@@ -301,6 +302,7 @@ const Sessions = ({ navigation }: Routerprops) => {
 
                     <Text style={{fontSize:12, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Geplande sessies</Text>
                     <FlatList
+                    testID="altList"
                     data={mySessions.filter((item: SessionType)  => item.finished !== 'YES')}
                     keyExtractor={(item) => item.session_id.toString()}
                     renderItem={({ item }) => (
@@ -335,6 +337,7 @@ const Sessions = ({ navigation }: Routerprops) => {
 
                     <Text style={{fontSize:12, paddingLeft:8,paddingTop:2, marginBottom:4,borderTopWidth:.8,borderBottomColor:'lightgrey'}}>Afgeronde sessies</Text>
                     <FlatList
+                    testID="altList"
                     data={mySessions.filter((item: SessionType)  => item.finished === 'YES')}
                     keyExtractor={(item) => item.session_id.toString()}
                     renderItem={({ item }) => (
@@ -369,7 +372,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                 </View>
             ) : (
             <ScrollView style={styles.scrollView}>
-                <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                <Switch testID="sessionListSwitch" value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
                 trackColor={{true:'lightgrey', false:'lightgrey'}} style={{alignSelf:'center',marginBottom:10}}/>
 
                 <Text style={{fontSize:16, marginLeft:30, marginBottom:6}}>Sessie verzoeken</Text>
@@ -430,7 +433,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                 })
             ) : (
                 // Als sessions leeg is
-                <View style={styles.emptyCard}>
+                <View testID="requestCard" style={styles.emptyCard}>
                 <Text style={{color:'black', fontSize:18}}>Geen sessie verzoeken</Text>
                 </View>
             )}
@@ -507,7 +510,7 @@ const Sessions = ({ navigation }: Routerprops) => {
                 })
             ) : (
                 // Als sessions leeg is
-                <View style={[styles.emptyCard, { backgroundColor: '#7D8DF6' }]}>
+                <View testID="plannedSessionCard" style={[styles.emptyCard, { backgroundColor: '#7D8DF6' }]}>
                     <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
                 </View>
                 

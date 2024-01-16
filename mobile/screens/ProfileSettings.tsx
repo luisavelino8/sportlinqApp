@@ -18,6 +18,7 @@ const ProfileSettings = ({ navigation }: Routerprops) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.infoContainer}>
                 <TouchableOpacity 
+                testID="profileSettingsOptions"
                 onPress={() => {
                     navigation?.navigate('AccountDetail');
                 }} >

@@ -300,7 +300,7 @@ const NewSession = () => {
 
               {listOfFriends.length > 0 ? (
               <>
-                <View style={styles.modal}>
+                <View testID="sessionModal" style={styles.modal}>
                 
                 <RNPickerSelect
                 items={listOfFriends.map(friend => ({ 

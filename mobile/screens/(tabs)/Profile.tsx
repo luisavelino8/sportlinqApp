@@ -132,7 +132,7 @@ const Profile = ({ navigation }: Routerprops) => {
 
           <ScrollView style={styles.infoContainer}>
             {Object.keys(userObject).filter((key) => displayKeys.includes(key)).map(key => (
-              <View style={styles.dataContainer} key={key}>
+              <View testID="userInfoView" style={styles.dataContainer} key={key}>
                 <Text style={{ color: '#C0C9FF', fontSize:12,marginBottom:6}}> 
                 {(() => {
                   switch (key) {

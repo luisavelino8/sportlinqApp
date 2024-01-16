@@ -75,7 +75,7 @@ const LocationComponent = () => {
     useEffect(() => {
         navigation.setOptions({
                     headerRight: () => (
-                        <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
+                        <Switch testID="locationSwitch" value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
                         trackColor={{true:'lightgrey', false:'lightgrey'}} style={{marginRight:14}}/>
                     ),
                 });
@@ -120,7 +120,7 @@ const LocationComponent = () => {
                 <ScrollView style={styles.scrollView}>
                 <View style={styles.cardContainer}>
                     {(locations as LocationType[]).map(location => (
-                        <View style={styles.card} key={location.location_id}>
+                        <View testID="locationCard" style={styles.card} key={location.location_id}>
                             <Image
                                 style={styles.image}
                                 source={myImageRoutes[location.image]}
@@ -155,7 +155,7 @@ const LocationComponent = () => {
                 //     ))}
                 // </MapView>
 
-                <View>
+                <View testID="maps">
                     <Text>Maps</Text>
                 </View>
             )}
