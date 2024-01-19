@@ -67,14 +67,12 @@ export default function Vrienden({ navigation }: Routerprops) {
 
     const [myRequests, setMyRequests] = useState<MyRequests[]>([]);
     const {myFriends, setMyFriends} = useAuth();
-    //const [myFriends, setMyFriends] = useState<Friend[]>([]);
     const {friendsCount, setFriendsCount} = useAuth();
 
-    //const voor validatie
     const [searchError, setSearchError] = useState(false);
 
     const searchFriend = () => {
-        // Validatie/foutmelding
+    
         let hasErrors = false;
 
         if (search == '') {
@@ -265,7 +263,7 @@ export default function Vrienden({ navigation }: Routerprops) {
     const showToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'success', // 'default', 'info', 'success', 'danger'
+          type: 'success',
           autoHide: true,
           duration: 5000,
           style: {
@@ -282,7 +280,7 @@ export default function Vrienden({ navigation }: Routerprops) {
     const showFailToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'danger', // 'default', 'info', 'success', 'danger'
+          type: 'danger',
           autoHide: true,
           duration: 5000,
           style: {
@@ -339,8 +337,8 @@ export default function Vrienden({ navigation }: Routerprops) {
         {verzoekenTab ? (
         <View style={styles.VerzoekenContainer}>
             <FlatList
-                data={myRequests} // Array van gebruikers die je hebt ontvangen van searchFriend
-                keyExtractor={(item) => item.id.toString()} // Unieke sleutel voor elk item
+                data={myRequests} 
+                keyExtractor={(item) => item.id.toString()} 
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => {}}>
                         <View style={styles.userContainer}>
@@ -364,8 +362,8 @@ export default function Vrienden({ navigation }: Routerprops) {
         ) :friendTab ? (
         <View style={styles.VriendenContainer}>
             <FlatList
-                data={myFriends} // Array van gebruikers die je hebt ontvangen van searchFriend
-                keyExtractor={(item) => item.friend_id.toString()} // Unieke sleutel voor elk item
+                data={myFriends} 
+                keyExtractor={(item) => item.friend_id.toString()} 
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => {}}>
                         <View style={styles.userContainer}>
@@ -396,16 +394,14 @@ export default function Vrienden({ navigation }: Routerprops) {
 
             {!searchError && !noFoundUsersError && (
             <FlatList
-                data={searchUsers} // Array van gebruikers die je hebt ontvangen van searchFriend
-                keyExtractor={(item) => item.user_id.toString()} // Unieke sleutel voor elk item
+                data={searchUsers} 
+                keyExtractor={(item) => item.user_id.toString()} 
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => show(item)}>
                         <View style={styles.userContainer}>
                             <Image source={require('../assets/images/logo.png')} style={styles.image} resizeMode='contain'/>
                             <View style={styles.userText}>
                                 <Text style={{fontSize:16}}>{item.userName}</Text>
-                                {/* <Text>{item.fullName}</Text> */}
-                                {/* <Text style={{marginTop:8, fontSize:16}}>{item.city}</Text> */}
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -486,8 +482,6 @@ const styles = StyleSheet.create({
     searchBar: {
         width:'85%',
         height:40,
-        //borderWidth:1,
-        //borderColor:'#7D8DF6',
         borderRadius:12,
         padding:8,
         backgroundColor:'#E6E6E6'
@@ -528,7 +522,6 @@ const styles = StyleSheet.create({
     middleContent: {
         height:'50%',
         width:'90%',
-        //backgroundColor:'yellow',
         justifyContent:'space-evenly',
         alignItems:'center',
     },

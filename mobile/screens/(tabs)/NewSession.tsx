@@ -4,14 +4,11 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../AuthContext';
 import RNPickerSelect from 'react-native-picker-select';
-//import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 
 
 interface Friend {
-    // user_id: number;
-    // userName: string;
     user1_id: number;
     user2_id: number;
     user1:{
@@ -47,14 +44,10 @@ const NewSession = () => {
     const currentUser = userObject.user_id;
 
     const [listOfFriends, setListOfFriends] = useState<Friend[]>([]);
-
-    // luister of er nieuwe pending sessions zijn, dan sessies opnieuw laden
     const { listenPendingSessions, setListenPendingSessions } = useAuth();
 
     useEffect(() => {
         setVisible(isFocused);
-        
-        // om direct alle friends te krijgen
         getFriendsForSessions();
     }, [isFocused, locations]);
 
@@ -73,7 +66,7 @@ const NewSession = () => {
 
         setSelectedFriendID(null);
         setSelectedLocationID(null);
-        setSelectedDate(null); //fixen later met selectedDate
+        setSelectedDate(null);
     };
 
     // Functie om de datum te formatteren
@@ -117,8 +110,7 @@ const NewSession = () => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedFriendID, setSelectedFriendID] = useState<number | null>(null);
     const [selectedLocationID, setSelectedLocationID] = useState<number | null>(null);
-    //const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date()); //fixen later met selectedDate
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date()); 
     const [formattedDate, setFormattedDate] = useState('');
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -142,21 +134,15 @@ const NewSession = () => {
         const formattedDate = formatDateCustomOrder(date);
         setFormattedDate(formattedDate);
         console.log(formattedDate);
-        
-        //setSelectedDate(date.toISOString());
         setSelectedDate(date);
         hideDatePicker();
     };
 
-    // validatie const
     const [friendError, setFriendError] = useState(false);
     const [locationError, setLocationError] = useState(false);
     const [dateError, setDateError] = useState(false);
     const [oldDateError, setOldDateError] = useState(false);
 
-    // deze dus veranderen wanneer er een friend table is, user_id
-    // in query weghalen etc, want door gebruik alle users, moet ik
-    // mezelf van die lijst uitsluiten
     const getFriendsForSessions = () => {
         const currentUserID = userObject.user_id;
         fetch(`${API_URL}/getFriendsForSessions?user_id=${currentUserID}`, {
@@ -184,7 +170,7 @@ const NewSession = () => {
     };
 
     const sendSessionRequest = () => {
-        // Validatie/foutmelding
+        // Validatie(foutmeldingen)
         let hasErrors = false;
 
         if (!selectedFriendID) {
@@ -243,7 +229,6 @@ const NewSession = () => {
             } catch (err) {
               console.log(err);
             } finally {
-                // Sluit de modal na de toast
                 hide();
             }
           })
@@ -255,7 +240,7 @@ const NewSession = () => {
     const showToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'success', // 'default', 'info', 'success', 'danger'
+          type: 'success',
           autoHide: true,
           duration: 5000,
           style: {
@@ -272,7 +257,7 @@ const NewSession = () => {
     const showFailToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'danger', // 'default', 'info', 'success', 'danger'
+          type: 'danger',
           autoHide: true,
           duration: 5000,
           style: {
@@ -311,10 +296,10 @@ const NewSession = () => {
                 onValueChange={handleFriendChange}
                 style={{
                   inputAndroid: { width:'80%',fontSize: 16,paddingVertical: 12,paddingHorizontal: 10,borderBottomWidth: 2,
-                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, // to ensure the text is never behind the icon
+                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, 
                   },
                   inputIOS: {width:'80%',fontSize: 16,paddingVertical: 12,paddingHorizontal: 10,borderBottomWidth: 2,
-                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6, paddingRight: 30, // to ensure the text is never behind the icon
+                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6, paddingRight: 30, 
                   },
                   placeholder: {
                     color: 'white',
@@ -329,10 +314,10 @@ const NewSession = () => {
                 onValueChange={handleLocationChange}
                 style={{
                   inputAndroid: { width:'80%',fontSize: 16,paddingVertical: 12,paddingHorizontal: 10,borderBottomWidth: 2,
-                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, // to ensure the text is never behind the icon
+                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, 
                   },
                   inputIOS: {width:'80%',fontSize: 16,paddingVertical: 12,paddingHorizontal: 10,borderBottomWidth: 2,
-                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, // to ensure the text is never behind the icon
+                    borderColor: 'white',color: 'white',alignSelf: 'center',marginBottom:6,paddingRight: 30, 
                   },
                   placeholder: {
                     color: 'white',
@@ -344,7 +329,7 @@ const NewSession = () => {
                 <TouchableOpacity onPress={showDatePicker} style={{width:'80%'}}>
                 <Text style={{width:'100%',fontSize: 16,paddingVertical: 12,paddingHorizontal: 10,borderBottomWidth: 2,
                     borderColor: 'white',color: 'white',alignSelf: 'center',paddingRight: 30}}>Datum  <FontAwesome name="angle-down" size={25} color='#BAC3FE' style={{ marginLeft: 15}}/></Text>
-                {/* <View style={{borderBottomColor:'#BAC3FE',borderBottomWidth:2}}></View> */}
+                
                 </TouchableOpacity>
                 <Text style={{fontSize:16, width:'60%', textAlign:'center',color: 'white',marginBottom:6 }}>{formattedDate}</Text>
                 {dateError && <Text style={styles.errorText}>Selecteer een datum</Text>}
@@ -400,11 +385,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color:'red',
-        //textAlign:'center'
     },
-    //
-    //
-    // styling voor RNpicker
     inputAndroid: {
       width:'80%',
       fontSize: 16,
@@ -414,7 +395,7 @@ const styles = StyleSheet.create({
       borderColor: 'white',
       color: 'black',
       alignSelf: 'center',
-      paddingRight: 30, // to ensure the text is never behind the icon
+      paddingRight: 30,
     },
     inputIOS: {
       width:'80%',
@@ -425,7 +406,7 @@ const styles = StyleSheet.create({
       borderColor: 'white',
       color: 'black',
       alignSelf: 'center',
-      paddingRight: 30, // to ensure the text is never behind the icon
+      paddingRight: 30,
     },
     placeholder: {
       color: 'white',

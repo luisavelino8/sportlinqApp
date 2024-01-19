@@ -58,28 +58,21 @@ const Sessions = ({ navigation }: Routerprops) => {
     const { selectedSessionForReview, setSelectedSessionForReview} = useAuth();
     const currentUserID = userObject.user_id;
     const currentUserName = userObject.userName;
-    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+    const { sessionReviewed, setSessionReviewed} = useAuth();
     const [allObjectsNull, setAllObjectsNull] = useState(true);
 
-    // bij ophalen van sessies checken of array null objects heeft, omdat ze al reviewed zijn
     let areAllObjectsNull = true;
-
-
 
     const [isChecked, setIsChecked] = useState(false);
     const toggleIsChecked = () => {
         setIsChecked(value => !value);
     };
 
-
-    // luister of er nieuwe pending sessions zijn, dan sessies opnieuw laden
     const { listenPendingSessions, setListenPendingSessions } = useAuth();
 
-    //getSessions uitvoeren wanneer component geladen
     useEffect(() => {
         getSessionRequests();
         getSessions();
-        // hier luisteren naar change pending sessions
         if (listenPendingSessions || currentUserName || sessionReviewed) {
             areAllObjectsNull = true;
             getSessionRequests();
@@ -132,12 +125,10 @@ const Sessions = ({ navigation }: Routerprops) => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    //showToast(jsonRes.message);
                     console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    //showFailToast(jsonRes.message);
                     console.log(jsonRes.message);
                 }
             } catch (err) {
@@ -161,12 +152,10 @@ const Sessions = ({ navigation }: Routerprops) => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    //showToast(jsonRes.message);
                     console.log(jsonRes.message);
                     getSessionRequests();
                     getSessions();
                 } else {
-                    //showFailToast(jsonRes.message);
                     console.log(jsonRes.message);
                 }
             } catch (err) {
@@ -207,7 +196,7 @@ const Sessions = ({ navigation }: Routerprops) => {
     const showToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'success', // 'default', 'info', 'success', 'danger'
+          type: 'success',
           autoHide: true,
           duration: 5000,
           style: {
@@ -224,7 +213,7 @@ const Sessions = ({ navigation }: Routerprops) => {
     const showFailToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'danger', // 'default', 'info', 'success', 'danger'
+          type: 'danger',
           autoHide: true,
           duration: 5000,
           style: {
@@ -241,13 +230,11 @@ const Sessions = ({ navigation }: Routerprops) => {
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
 
-        // Extract components
         const day = date.getDate();
-        const month = date.getMonth() + 1; // Months are zero-based
+        const month = date.getMonth() + 1;
         const hours = date.getHours();
         const minutes = date.getMinutes();
 
-        // Format components
         const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month} ${hours}:${minutes}`;
 
         return formattedDate;
@@ -256,8 +243,6 @@ const Sessions = ({ navigation }: Routerprops) => {
 
     return (
         <View style={styles.container}>
-            {/* <Switch value={isChecked} onValueChange={toggleIsChecked} thumbColor={'#7D8DF6'} 
-            trackColor={{true:'lightgrey', false:'lightgrey'}}/> */}
 
             {isChecked ? (
                 // alternatieve lijst vorm
@@ -379,9 +364,8 @@ const Sessions = ({ navigation }: Routerprops) => {
 
             <View style={styles.cardContainer}>
             {sessionRequests && sessionRequests.length > 0 ? (
-                // Als sessions niet leeg is
                 (sessionRequests as RequestSessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
-                //(sessionRequests.slice().reverse() as RequestSessionType[]).map(session => {
+                
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
 
@@ -408,12 +392,6 @@ const Sessions = ({ navigation }: Routerprops) => {
                         </View>
                     </View>
 
-                    {/* <TouchableOpacity style={styles.sideButton} onPress={() => {}}>
-                        <View>
-                        <Text style={{ color: 'black' }}>Bekijk</Text>
-                        </View>
-                    </TouchableOpacity> */}
-
                     <TouchableOpacity style={styles.deleteButton} onPress={() => {deleteSessionRequest(session.id)}}>
                         <View>
                             <FontAwesome name="close" size={25} color='black'/>
@@ -432,7 +410,6 @@ const Sessions = ({ navigation }: Routerprops) => {
                 );
                 })
             ) : (
-                // Als sessions leeg is
                 <View testID="requestCard" style={styles.emptyCard}>
                 <Text style={{color:'black', fontSize:18}}>Geen sessie verzoeken</Text>
                 </View>
@@ -444,9 +421,8 @@ const Sessions = ({ navigation }: Routerprops) => {
             <Text style={{fontSize:16, marginLeft:30, marginBottom:6}}>Geplande sessies</Text>
             <View style={styles.cardContainer}>
             {mySessions && mySessions.length > 0 ? (
-                // Als sessions niet leeg is
+        
                 (mySessions as SessionType[]).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(session => {
-                //(mySessions.slice().reverse() as SessionType[]).map(session => {
 
                 const userInDB = currentUserID === session.user1_id ? 'user1' : 'user2';
 
@@ -461,7 +437,6 @@ const Sessions = ({ navigation }: Routerprops) => {
                 }
 
                 areAllObjectsNull = false;
-                //setAllObjectsNull(false);
         
                 const originalDate = new Date(session.date);
                 const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
@@ -499,17 +474,10 @@ const Sessions = ({ navigation }: Routerprops) => {
                         </View>
                     </View>
 
-                    {/* <TouchableOpacity style={[styles.sideButton,{backgroundColor:'#6C79CF'}]} onPress={() => {}}>
-                        <View>
-                        <Text style={{ color: 'white' }}>Bekijk</Text>
-                        </View>
-                    </TouchableOpacity> */}
-
                     </View>
                 );
                 })
             ) : (
-                // Als sessions leeg is
                 <View testID="plannedSessionCard" style={[styles.emptyCard, { backgroundColor: '#7D8DF6' }]}>
                     <Text style={{ color: 'white', fontSize: 18 }}>Geen geplande sessies</Text>
                 </View>
@@ -652,6 +620,6 @@ const styles = StyleSheet.create({
         backgroundColor:'#6C79CF',
         padding:6,
         borderRadius:8,
-        zIndex:99, //review button wordt voorop de card getoond
+        zIndex:99,
     },
 });

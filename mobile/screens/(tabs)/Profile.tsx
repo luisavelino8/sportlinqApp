@@ -33,7 +33,7 @@ const Profile = ({ navigation }: Routerprops) => {
     const {myFriends, setMyFriends} = useAuth();
     const {friendsCount, setFriendsCount} = useAuth();
     const {myReviews, setMyReviews} = useAuth();
-    const { sessionReviewed, setSessionReviewed} = useAuth(); // deze om sessies opnieuw te laden, als sessie is reviewed (YES/NO)
+    const { sessionReviewed, setSessionReviewed} = useAuth();
 
 
     useEffect(() => {
@@ -46,7 +46,6 @@ const Profile = ({ navigation }: Routerprops) => {
       }
     }, []);
 
-    // dus origineel aanwezig in vrienden.tsx component
     const getFriends = () => {
       fetch(`${API_URL}/getFriends?user_id=${currentUser}`, {
           method: 'GET',
@@ -73,7 +72,6 @@ const Profile = ({ navigation }: Routerprops) => {
       });
     };
 
-    // voor reviews en ReviewPage
     const getReviews = () => {
       fetch(`${API_URL}/getReviews?user_id=${currentUser}`, {
           method: 'GET',
@@ -200,10 +198,6 @@ const styles = StyleSheet.create({
       alignItems:'center',
       height:'80%',
       width:70,
-      //backgroundColor:'#555FA3',
-      //borderRadius:14,
-      //borderBottomColor:'white',
-      //borderBottomWidth:1.3,
     },
     infoContainer: {
         height:'30%',

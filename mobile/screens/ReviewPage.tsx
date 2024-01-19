@@ -8,8 +8,6 @@ interface Routerprops {
   navigation: NavigationProp<any, any>;
 }
 
-const API_URL = 'http://localhost:5000';
-//const API_URL = 'http://192.168.0.101:5000';
 
 const ReviewPage = ({ navigation }: Routerprops) => {
     const { useToken, setToken } = useAuth();
@@ -34,18 +32,6 @@ const ReviewPage = ({ navigation }: Routerprops) => {
         const session = new Date(sessionDate);
     
         const timeDifference = today.getTime() - session.getTime();
-        // const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    
-        // if (daysDifference < 1) {
-        //     return 'Vandaag';
-        // } else if (daysDifference < 2) {
-        //     return 'Gisteren';
-        // } else if (daysDifference < 30) {
-        //     return `${daysDifference} dagen geleden`;
-        // } else {
-        //     const monthsDifference = Math.floor(daysDifference / 30);
-        //     return `${monthsDifference} ${monthsDifference === 1 ? 'maand' : 'maanden'} geleden`;
-        // }
 
         const hoursDifference = Math.ceil(timeDifference / (1000 * 60 * 60));
         if (hoursDifference < 24) {
@@ -75,7 +61,6 @@ const ReviewPage = ({ navigation }: Routerprops) => {
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => {}}>
                         <View style={styles.textContainer}>
-                            {/* <Image source={require('../assets/images/logo.png')} style={styles.image} resizeMode='contain'/> */}
                             <View style={styles.reviewInfo}>
                                 <View style={{width:'100%', flexDirection:'row'}}>
                                     <View style={{width:'60%'}}>

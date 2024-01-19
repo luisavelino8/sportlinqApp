@@ -5,23 +5,6 @@ import PendingSessionRequest from '../models/pendingSessionRequest.js';
 
 
 const getFriendsForSessions = async (req, res, next) => {
-    // try {
-    //     const currentUserId = req.query.user_id;
-
-    //     const friends = await User.findAll({
-    //         attributes: ['user_id', 'userName'],
-    //         where: {
-    //             user_id: {
-    //                 [Sequelize.Op.not]: currentUserId,
-    //             },
-    //         },
-    //     });
-    //     res.status(200).json(friends);
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ message: 'Er is een fout opgetreden bij het ophalen van locaties' });
-    // }
-
     const { user_id } = req.query;
 
     try {

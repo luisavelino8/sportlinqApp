@@ -17,7 +17,6 @@ export default function WelcomeScreen() {
   return (
     <NavigationContext.Consumer>
       {(navigation) => (
-        // <ImageBackground source={require('../assets/images/bg1.png')} style={styles.imageBG}>
         <View style={styles.container}>
           <Image
             testID="SportlinqLogo"
@@ -45,7 +44,6 @@ export default function WelcomeScreen() {
             </TouchableOpacity>
           </View>
         </View>
-        // </ImageBackground>
       )}
     </NavigationContext.Consumer>
   );

@@ -39,7 +39,6 @@ const PendingSessionRequest = sequelize.define('PendingSessionRequests', {
     }
 });
 
-// Definieer de relatie tussen de tabellen
 PendingSessionRequest.belongsTo(Location, { foreignKey: 'location_id', as: 'locationRelation' });
 PendingSessionRequest.belongsTo(User, { foreignKey: 'requesterUserId', as: 'requesterUser' });
 PendingSessionRequest.belongsTo(User, { foreignKey: 'receiverUserId', as: 'receiverUser' });

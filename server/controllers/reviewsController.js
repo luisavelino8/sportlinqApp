@@ -22,10 +22,6 @@ const finishSessionWithoutReview = async (req, res, next) => {
             return res.status(404).json({ message: 'Sessie niet gevonden' });
         }
 
-        // if (session.finished === 'YES') {
-        //     return res.status(200).json({ message: 'Sessie is al afgerond' });
-        // }
-
         session.finished = "YES";
 
         if (userInDB === 'user1') {
@@ -62,10 +58,6 @@ const finishSessionWithReview = async (req, res, next) => {
         if (!session) {
             return res.status(404).json({ message: 'Sessie niet gevonden' });
         }
-
-        // if (session.finished === 'YES') {
-        //     return res.status(200).json({ message: 'Sessie is al afgerond' });
-        // }
 
         session.finished = "YES";
 
@@ -119,8 +111,6 @@ const getReviews = async (req, res, next) => {
                 },
             ]
         });
-
-        //const reviewsCount = myReviews.length;
 
         console.log('my reviews: '+myReviews);
         res.status(200).json(myReviews);

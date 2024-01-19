@@ -1,7 +1,5 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Button, KeyboardAvoidingView, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
 import React, { useEffect, useState } from 'react';
-//import { FIREBASE_AUTH } from '../../FirebaseConfig';
-//import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { LogBox } from 'react-native';
 import { useAuth } from '../../mobile/AuthContext';
@@ -28,14 +26,11 @@ const InloggenNew = ({ navigation }: Routerprops) => {
     const { userObject, setUserObject} = useAuth();
     const { locations, setLocations} = useAuth();
 
-
-    // check of token binnenkomt
     useEffect(() => {
         console.log(useToken);
       }, [useToken]);
     
     const onChangeHandler = () => {
-        //setIsLogin(!isLogin);
         setMessage('');
     };
 
@@ -73,7 +68,6 @@ const InloggenNew = ({ navigation }: Routerprops) => {
     }
 
     const onSubmitHandler = () => {
-        //setLoading(true);
         const payload = {
             email,
             userName,
@@ -133,7 +127,6 @@ const InloggenNew = ({ navigation }: Routerprops) => {
         });
     };
 
-    // naar inloggen verplaatst
     const getLocations = (token: any) => {
         fetch(`${API_URL}/locations`, {
             method: 'GET',
@@ -160,13 +153,10 @@ const InloggenNew = ({ navigation }: Routerprops) => {
     };
 
     const getMessage = () => {
-        //const status = isError ? `Error: ` : `Success: `;
-        //return status + message;
         return message;
     }
 
     return (
-        // <ImageBackground source={require('../assets/images/bg1.png')} style={styles.imageBG}>
         <View style={styles.container}>
             <View style={styles.inlogContainer}>
                 <View style={styles.inputContainer}>
@@ -190,41 +180,7 @@ const InloggenNew = ({ navigation }: Routerprops) => {
                 </View>
             </View>
         </View>
-        // </ImageBackground>
     );
-
-    // // voor loading indicator
-    // return (
-    //     <View style={styles.container}>
-    //         <View style={styles.inlogContainer}>
-    //             <View style={styles.inputContainer}>
-    //                 <TextInput style={[styles.input, message ==='Gebruiker niet gevonden' && styles.errorInput]} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)} value={email}></TextInput>
-    //                 <TextInput secureTextEntry={true} style={[styles.input, (message === 'Vul de juiste wachtwoord in'||message === 'Gebruiker niet gevonden') && styles.errorInput]} placeholder="Password" onChangeText={(text) => setPassword(text)} value={password}></TextInput>
-    //                 <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
-    //             </View>
-    //             { loading ? (<ActivityIndicator size='large' color='#7D8DF6' />)
-    //             : (<>
-    //             <View style={styles.buttonContainer}>
-    //                 <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
-    //                     <Text style={styles.buttonText}>Log in</Text>
-    //                 </TouchableOpacity>
-    //                 <Text style={{padding:2, color:'dimgrey'}}>or</Text>
-    //                 <TouchableOpacity 
-    //                     style={styles.button2} 
-    //                     onPress={() => {
-    //                         resetValues();
-    //                         navigation?.navigate('Registreren');
-    //                 }}>
-    //                 <Text style={styles.buttonText2}>Sign up</Text>
-    //                 </TouchableOpacity>
-    //             </View>
-    //             </>)}
-    //         </View>
-    //     </View>
-    // );
-
-    // check voor later -> keyboardavoiding binnen de eerste View van return
-    //<KeyboardAvoidingView behavior='padding'></KeyboardAvoidingView>
 };
 
 export default InloggenNew

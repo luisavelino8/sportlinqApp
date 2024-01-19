@@ -115,12 +115,6 @@ function App() {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
   const isWeb = windowWidth > 600;
-  // style={isWeb ? styles.webContainer : styles.mobileContainer}
-
-  // // check token
-  // useEffect(() => {
-  //   console.log('App.js krijgt de token :', useToken);
-  // }, [useToken]);
 
   return (
     <NavigationContainer>

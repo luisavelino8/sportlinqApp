@@ -51,7 +51,6 @@ const Session = sequelize.define('sessions', {
     },
 });
 
-// Definieer de relatie tussen de tabellen
 Session.belongsTo(Location, { foreignKey: 'location_id', as: 'locationRelation' });
 Session.belongsTo(User, { foreignKey: 'user1_id', as: 'user1' });
 Session.belongsTo(User, { foreignKey: 'user2_id', as: 'user2' });

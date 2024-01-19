@@ -44,7 +44,6 @@ const Review = sequelize.define('reviews', {
     },
 });
 
-// Definieer de relatie tussen de tabellen
 Review.belongsTo(Location, { foreignKey: 'location_id', as: 'locationReview' });
 Review.belongsTo(Session, { foreignKey: 'session_id', as: 'sessionReview' });
 Review.belongsTo(User, { foreignKey: 'user_id', as: 'userReview' });

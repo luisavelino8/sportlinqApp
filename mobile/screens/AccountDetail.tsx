@@ -49,12 +49,6 @@ const AccountDetail = ({ navigation }: Routerprops) => {
 
     const [passwordBackendMessage, setPasswordBackendMessage] = useState('');
 
-
-
-
-    
-    // useEffect zodat de huidige userObject gebruikt en verandert
-    // kan worden in textInput
     useEffect(() => {
         setNewUserName(userObject.userName || '');
         setNewFullName(userObject.fullName || '');
@@ -70,7 +64,7 @@ const AccountDetail = ({ navigation }: Routerprops) => {
     type UpdatePayload = {
         email: any;
         newUserName: string;
-        newPassword?: string; // zodat wachtwoord optioneel is
+        newPassword?: string;
         newFullName: string;
         newCity: string;
         newAboutMe: string;
@@ -78,7 +72,7 @@ const AccountDetail = ({ navigation }: Routerprops) => {
 
     const updateButton = () => {
         let hasErrors = false;
-        // validatie van velden
+        
         if (newUserName.length < 6 || newUserName.length > 30) {
             setUserNameError(true);
             hasErrors = true;
@@ -222,8 +216,6 @@ const AccountDetail = ({ navigation }: Routerprops) => {
                     setPasswordConfirmed(true);
                 } else {
                     setPasswordBackendMessage(jsonRes.message);
-                    //setPassword('');
-                    //setNewPassword('');
                 }
             } catch (err) {
                 console.log(err);
@@ -237,7 +229,7 @@ const AccountDetail = ({ navigation }: Routerprops) => {
     const showToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'success', // 'default', 'info', 'success', 'danger'
+          type: 'success',
           autoHide: true,
           duration: 5000,
           style: {
@@ -254,7 +246,7 @@ const AccountDetail = ({ navigation }: Routerprops) => {
     const showFailToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'danger', // 'default', 'info', 'success', 'danger'
+          type: 'danger',
           autoHide: true,
           duration: 5000,
           style: {
@@ -278,13 +270,11 @@ const AccountDetail = ({ navigation }: Routerprops) => {
                 <Text style={{fontSize:12, marginBottom:5}}>Gebruikersnaam</Text>
                 <TextInput style={styles.textInput} placeholder="Gebruikersnaam" autoCapitalize="none" onChangeText={(text) => setNewUserName(text)} value={newUserName} clearButtonMode='always'></TextInput>
                 </View>
-                {/* {userNameError && <Text style={styles.errorText}>naam moet tussen 6 en 30 karakters</Text>} */}
                 <Text style={{color: userNameError ? 'red' : 'white'}}>Gebruikersnaam mag niet leeg zijn</Text>
 
                 <View testID="fullnameField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Volledige naam</Text>
                 <TextInput style={styles.textInput} placeholder="Volledige naam" autoCapitalize="none" onChangeText={(text) => setNewFullName(text)} value={newFullName} clearButtonMode='always'></TextInput>
-                {/* {fullNameError && <Text style={styles.errorText}>verkort je naam voor het profiel</Text>} */}
                 </View>
                 <Text style={{color: fullNameError ? 'red' : 'white'}}>verkort je naam voor het profiel</Text>
 
@@ -292,14 +282,12 @@ const AccountDetail = ({ navigation }: Routerprops) => {
                 <View testID="cityField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Stad</Text>
                 <TextInput style={styles.textInput} placeholder="Stad" autoCapitalize="none" onChangeText={(text) => setNewCity(text)} value={newCity} clearButtonMode='always'></TextInput>
-                {/* {cityError && <Text style={styles.errorText}>verkort de stadsnaam</Text>} */}
                 </View>
                 <Text style={{color: cityError ? 'red' : 'white'}}>verkort de stadsnaam</Text>
 
                 <View testID="aboutmeField" style={styles.dataContainer}>
                 <Text style={{fontSize:12, marginBottom:5}}>Over mij</Text>
                 <TextInput style={styles.textInput} placeholder="Over mij" autoCapitalize="none" onChangeText={(text) => setNewAboutMe(text)} value={newAboutMe} clearButtonMode='always'></TextInput>
-                {/* {aboutMeError && <Text style={styles.errorText}>Maximaal 220 karakters</Text>} */}
                 </View>
                 <Text style={{color: aboutMeError ? 'red' : 'white'}}>Maximaal 220 karakters</Text>
 
@@ -344,7 +332,6 @@ const AccountDetail = ({ navigation }: Routerprops) => {
                             <TextInput style={styles.wachtwoordStyle} secureTextEntry={true} placeholder="Huidig wachtwoord" onChangeText={(text) => setPassword(text)} value={password} clearButtonMode='always'></TextInput>
                             <Text style={{ color: passwordBackendMessage ? 'red' : 'white' }}>{passwordBackendMessage || 'Tekst die altijd wit is'}</Text>
                             <TextInput style={styles.wachtwoordStyle} secureTextEntry={true} placeholder="Nieuwe wachtwoord" onChangeText={(text) => setNewPassword(text)} value={newPassword} clearButtonMode='always'></TextInput>
-                            {/* {passwordError && <Text style={styles.errorText}>8 tekens, hoofdletter, cijfer en speciaal teken</Text>} */}
                             <Text style={{color: passwordError ? 'red' : 'white'}}>8 tekens, hoofdletter, cijfer en speciaal teken</Text>
 
 
@@ -392,7 +379,6 @@ const styles = StyleSheet.create({
         borderBottomWidth:1,
         justifyContent:'flex-end',
         paddingBottom:5,
-        //marginTop:2,
     },
     passwordContainer: {
         height: 70,

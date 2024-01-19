@@ -108,7 +108,6 @@ const RegistrerenNew = ({ navigation }: Routerprops) => {
                     setIsError(true);
                     setMessage(jsonRes.message);
                 } else {
-                    //onLoggedIn(jsonRes.token);
                     setIsError(false);
                     setMessage(jsonRes.message);
                 }
@@ -143,16 +142,13 @@ const RegistrerenNew = ({ navigation }: Routerprops) => {
             <View style={styles.registerContainer}>
               <View style={styles.inputContainer}>
                 <TextInput style={[styles.input, emailError && styles.errorInput]} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)} value={email} clearButtonMode='always'/>
-                {/* {emailError && <Text style={styles.errorText}>email moet eindigen op "@gmail.com"</Text>} */}
                 <Text testID="emailError" style={{color: emailError ? 'red' : 'white'}}>email moet eindigen op "@gmail.com"</Text>
 
                 <TextInput style={[styles.input, userNameError && styles.errorInput]} placeholder="Username" onChangeText={(text) => setName(text)} value={userName} clearButtonMode='always'/>
-                {/* {userNameError && <Text style={styles.errorText}>naam moet tussen 6 en 30 karakters</Text>} */}
                 <Text testID="userNameError" style={{color: userNameError ? 'red' : 'white'}}>naam moet tussen 6 en 30 karakters</Text>
 
 
                 <TextInput secureTextEntry={true} style={[styles.input, passwordError && styles.errorInput]} placeholder="Password" onChangeText={(text) => setPassword(text)} value={password} clearButtonMode='always'/>
-                {/* {passwordError && <Text style={styles.errorText}>minimaal 8 tekens, hoofdletter, cijfer en speciaal teken</Text>} */}
                 <Text testID="passwordError" style={{color: passwordError ? 'red' : 'white'}}>minimaal 8 tekens, hoofdletter, cijfer en speciaal teken</Text>
 
 
@@ -178,9 +174,6 @@ const RegistrerenNew = ({ navigation }: Routerprops) => {
         
         </View>
     );
-
-    // check voor later -> keyboardavoiding binnen de eerste View van return
-    //<KeyboardAvoidingView behavior='padding'></KeyboardAvoidingView>
 };
 
 const styles = StyleSheet.create({
@@ -209,7 +202,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%',
-        //marginVertical: 4,
         height: 50,
         padding: 10,
         backgroundColor: 'transparent',
@@ -220,7 +212,6 @@ const styles = StyleSheet.create({
     },
     message: {
         fontSize: 16,
-        //marginVertical: '5%',
     },
     buttonContainer: {
         width:'100%',

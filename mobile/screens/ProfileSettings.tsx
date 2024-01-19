@@ -34,12 +34,7 @@ const ProfileSettings = ({ navigation }: Routerprops) => {
                 <Text style={{color:'grey', fontSize:13}}>Beheer je accountinstellingen</Text>
                 </TouchableOpacity>
             </View>
-            {/* <View style={{height:'12%', width:'100%', backgroundColor:'white', marginBottom:6}}></View>
-            <View style={{height:'15%', width:'100%', backgroundColor:'white', marginBottom:6,position:'absolute',}}></View>
-            <View style={{height:'8%', width:'100%', backgroundColor:'white', marginBottom:6,position:'absolute',}}></View>
-            <View style={{height:'10%', width:'100%', backgroundColor:'white', marginBottom:6,position:'absolute',}}></View>
-            <View style={{height:'10%', width:'100%', backgroundColor:'white', marginBottom:6,position:'absolute',}}></View>
-            <View style={{height:'10%', width:'100%', backgroundColor:'white', marginBottom:6,position:'absolute',}}></View> */}
+
             <View style={styles.endContainer}>
                 <TouchableOpacity 
                 style={styles.button}

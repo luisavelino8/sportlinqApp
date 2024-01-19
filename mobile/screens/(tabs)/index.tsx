@@ -4,7 +4,6 @@ import { useAuth } from '../../AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
-
 interface SessionFriend {
     session_id: number;
     user1_id: number;
@@ -60,7 +59,6 @@ const Home = () => {
 
 
     useEffect(() => {
-        // nodig!, anders begint request al terwijl currentUser null is
         if (currentUser) {
             getSessionsFromFriends();
             getSessions();
@@ -87,7 +85,6 @@ const Home = () => {
         }
     };
 
-    // origineel dus geplaatst in sessions.tsx
     const getSessions = () => {
         fetch(`${API_URL}/sessions?user_id=${currentUser}`, {
             method: 'GET',
@@ -154,38 +151,6 @@ const Home = () => {
                 </View>
 
                 {mySessions && mySessions.length > 0 ? (
-                
-                // (mySessions as SessionType[]).filter(session => session.finished !== "YES").sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 1).map(session => {
-
-                // const originalDate = new Date(session.date);
-                // const formattedDate = `${originalDate.getDate()}-${originalDate.getMonth() + 1}-${originalDate.getFullYear().toString().slice(2)} ${originalDate.getHours()}:${originalDate.getMinutes()}`;
-
-                // return (
-                //     <View style={styles.card} key={session.session_id}>
-
-                //     <View style={styles.textContainer}>
-                //         <Text style={[styles.text2, { fontSize: 20 }]}>{session.locationRelation.locationName}</Text>
-                //         <Text style={[styles.text2, { fontSize: 14 }]}>{session.locationRelation.street}</Text>
-
-                //         <View style={styles.lowerBox}>
-                //         <Text style={[styles.dateBox, { fontSize: 18, color: 'white' }]}>{formattedDate} uur</Text>
-
-                //             <View style={styles.lowerBox2}>
-                //                 <Text style={{ color: 'white', fontSize: 18 }}>Sessie met:</Text>
-                //                 {session.user1.userName !== currentUserName && (
-                //                 <Text style={[styles.text2, { fontSize: 18 }]}>{session.user1.userName}</Text>
-                //                 )}
-
-                //                 {session.user2.userName !== currentUserName && (
-                //                 <Text style={[styles.text2, { fontSize: 18 }]}>{session.user2.userName}</Text>
-                //                 )}
-                //             </View>
-                //         </View>
-                //     </View>
-
-                //     </View>
-                // );
-                // })
 
                 showFirstSession.length > 0 ? (
                     // Als er sessies zijn om weer te geven
@@ -225,7 +190,6 @@ const Home = () => {
                         </View>
                     )
             ) : (
-                // Als sessions leeg is
                 <View testID="homePageCard" style={styles.emptyCard}>
                 <Text style={{color:'white', fontSize:18}}>Geen geplande sessies</Text>
                 </View>
@@ -268,7 +232,6 @@ const Home = () => {
                 );
                 })
             ) : (
-                // Als sessions leeg is
                 <View style={{width:'85%', marginBottom:14}} >
                     <Text style={{color:'dimgrey'}}>Geen sessies beschikbaar</Text>
                 </View>
@@ -307,7 +270,6 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
     },
-    // dit is overgenomen van session.tsx
     card: {
         width:'85%',
         height:130,

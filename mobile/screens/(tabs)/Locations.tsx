@@ -28,7 +28,6 @@ const INITIAL_REGION = {
     longitudeDelta: 3,
 };
 
-// voor nu voorbeeld locaties, straks echte locaties gebruiken
 const markers = [
     {
         latitude: 52.372353,
@@ -81,13 +80,6 @@ const LocationComponent = () => {
                 });
     }, [isChecked]);
 
-
-    // getlocations uitvoeren wanneer component geladen
-    // useEffect(() => {
-    //     getLocations();
-    // }, []);
-
-    // deze request is verplaatst naar Inloggen
     const getLocations = () => {
         fetch(`${API_URL}/locations`, {
             method: 'GET',

@@ -45,14 +45,12 @@ const Review = () => {
     };
 
     const hide = () => {
-        //setVisible(false);
         setVisibleReviewModal(false);
-        setSelectedSessionForReview(null); // ook nog voor andere handelingen binnen deze page
+        setSelectedSessionForReview(null);
         navigation.goBack();
     };
 
     const handleDismiss = () => {
-        //navigation.goBack();
         if (!visibleReviewModal) {
             navigation.goBack();
         }
@@ -155,12 +153,10 @@ const Review = () => {
             try {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
-                    //console.log(jsonRes.message);
                     showToast(jsonRes.message);
                     setSessionReviewed(true);
                     hide();
                 } else {
-                    //console.log(jsonRes.message);
                     showFailToast(jsonRes.message);
                 }
             } catch (err) {
@@ -175,7 +171,7 @@ const Review = () => {
     const showToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'success', // 'default', 'info', 'success', 'danger'
+          type: 'success',
           autoHide: true,
           duration: 5000,
           style: {
@@ -192,7 +188,7 @@ const Review = () => {
     const showFailToast = (value: string) => {
         showMessage({
           message: value,
-          type: 'danger', // 'default', 'info', 'success', 'danger'
+          type: 'danger',
           autoHide: true,
           duration: 5000,
           style: {
@@ -258,7 +254,6 @@ const Review = () => {
 
                     <View style={{width:'94%',height:150,alignItems:'center', backgroundColor:'#FFDE8D', borderRadius:8, padding:10}} >
                         <Text style={{fontSize:12, color:'#C59217',width:'100%',justifyContent:'flex-start'}}>Hoe was jouw ervaring op deze locatie?</Text>
-                        {/* <TextInput style={{width:'100%',height:120,textAlignVertical: 'top', marginVertical:8}} multiline placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText}/> */}
                         <TextInput style={{width:'100%',height:120,textAlignVertical: 'top', marginVertical:8}} multiline placeholder="" autoCapitalize="none" onChangeText={(text) => setReviewText(text)} value={reviewText} blurOnSubmit={true}/>
                         <Text style={{fontSize:12,textAlign:'center',color: reviewTextError ? 'red' : '#FFC436'}}>geen lege veld of meer dan 200 karakters</Text>
                     </View>

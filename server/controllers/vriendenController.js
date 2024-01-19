@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize';
 import User from '../models/user.js';
 import Friend from '../models/friend.js';
 
-
 const searchFriend = (req, res, next) => {
     const searchValue = req.body.search;
     const currentUser = req.body.currentUser;
@@ -107,16 +106,6 @@ const getFriendRequests = async (req, res, next) => {
             where: {
                 receiverUserId: user_id,
             },
-            // include: [
-            //     {
-            //         model: User,
-            //         as: 'requesterUser',
-            //         attributes: ['userName'],
-            //         where: {
-            //             user_id: Sequelize.col('PendingFriendRequests.requesterUserId')
-            //         }
-            //     },
-            // ]
         });
 
         const requesterUserInfo = [];
