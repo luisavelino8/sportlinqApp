@@ -150,7 +150,7 @@ const Home = () => {
 
             <View style={styles.topContainer} >
                 <View style={{width:'85%'}} >
-                    <Text style={{fontSize:18}}>Welcome {currentUserName}</Text>
+                    <Text testID="welcomeText" style={{fontSize:18}}>Welcome {currentUserName}</Text>
                 </View>
 
                 {mySessions && mySessions.length > 0 ? (
@@ -226,7 +226,7 @@ const Home = () => {
                     )
             ) : (
                 // Als sessions leeg is
-                <View style={styles.emptyCard}>
+                <View testID="homePageCard" style={styles.emptyCard}>
                 <Text style={{color:'white', fontSize:18}}>Geen geplande sessies</Text>
                 </View>
             )}
@@ -250,7 +250,7 @@ const Home = () => {
                     : sessionFriend.user2.userName;
 
                 return (
-                    <View style={styles.friendSessionCard} key={sessionFriend.session_id}>
+                    <View testID="friendSession" style={styles.friendSessionCard} key={sessionFriend.session_id}>
                         <View style={{width:'12%',height:'100%', justifyContent:'center',alignItems:'center'}} >
                         <FontAwesome name="circle" size={28} color='lightgrey'/>
                         </View>

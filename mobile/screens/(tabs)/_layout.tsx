@@ -38,7 +38,8 @@ export default function TabLayout({ navigation }: Routerprops) {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color='white' />,
-          tabBarLabelStyle:{color:'white'}
+          tabBarLabelStyle:{color:'white'},
+          tabBarTestID: 'homeTab',
         }}
       />
       <Tab.Screen
@@ -47,7 +48,8 @@ export default function TabLayout({ navigation }: Routerprops) {
         options={{
           title: 'My sessions',
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color='white' />,
-          tabBarLabelStyle:{color:'white'}
+          tabBarLabelStyle:{color:'white'},
+          tabBarTestID: 'sessionTab',
         }}
       />
       <Tab.Screen
@@ -59,6 +61,7 @@ export default function TabLayout({ navigation }: Routerprops) {
           tabBarLabelStyle:{color:'white'},
           headerTintColor: 'white',
           headerShadowVisible: false,
+          tabBarTestID: 'newSessionTab',
         }}
       />
       <Tab.Screen
@@ -68,6 +71,7 @@ export default function TabLayout({ navigation }: Routerprops) {
           title: 'Locations',
           tabBarIcon: ({ color }) => <TabBarIcon name="map-marker" color='white' />,
           tabBarLabelStyle:{color:'white'},
+          tabBarTestID: 'locationTab',
         }}
       />
       <Tab.Screen
@@ -77,6 +81,7 @@ export default function TabLayout({ navigation }: Routerprops) {
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color='white' />,
           tabBarLabelStyle:{color:'white'},
+          tabBarTestID: 'profileTab',
           headerStyle: { backgroundColor: '#7D8DF6'},
           headerTintColor: 'white',
           headerShadowVisible: false,
@@ -85,6 +90,7 @@ export default function TabLayout({ navigation }: Routerprops) {
               onPress={() => {
                 navigation?.navigate('ProfileSettings');
               }}
+              testID="profileSettingsIcon"
             >
               {({ pressed }) => (
                 <FontAwesome
