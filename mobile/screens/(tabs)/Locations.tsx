@@ -129,6 +129,7 @@ const LocationComponent = () => {
                 </View>
                 </ScrollView>
             ) : (
+                // // Alleen aanzetten als een simulator of Expo App wordt gebruikt
                 // <MapView style={StyleSheet.absoluteFill} 
                 // provider={PROVIDER_GOOGLE} 
                 // initialRegion={INITIAL_REGION}
